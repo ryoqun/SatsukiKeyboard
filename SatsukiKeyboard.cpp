@@ -18,3 +18,17 @@ void SatsukiKeyboard::stop(IOService *provider)
   printf("SatsukiKeyboard stop\n");
   return super::stop(provider);
 }
+
+void SatsukiKeyboard::dispatchKeyboardEvent(AbsoluteTime timeStamp,
+                                            UInt32 usagePage,
+                                            UInt32 usage,
+                                            UInt32 value,
+                                            IOOptionBits options)
+{
+  printf("Keyboard Event\n");
+  super::dispatchKeyboardEvent(timeStamp,
+                               usagePage,
+                               usage,
+                               value,
+                               options);
+}
