@@ -183,7 +183,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
-				MODULE_NAME = com.yourcompany.driver.SatsukiKeyboard;
+				MODULE_NAME = com.github.ryoqun.driver.SatsukiKeyboard;
 				MODULE_VERSION = 1.0.0d1;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = SatsukiKeyboard;
@@ -200,7 +200,7 @@
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(SYSTEM_LIBRARY_DIR)/Extensions";
-				MODULE_NAME = com.yourcompany.driver.SatsukiKeyboard;
+				MODULE_NAME = com.github.ryoqun.driver.SatsukiKeyboard;
 				MODULE_VERSION = 1.0.0d1;
 				PRODUCT_NAME = SatsukiKeyboard;
 				WRAPPER_EXTENSION = kext;
