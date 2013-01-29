@@ -25,6 +25,13 @@
 	<key>IOKitPersonalities</key>
 	<dict/>
 	<key>OSBundleLibraries</key>
-	<dict/>
+	<dict>
+		<key>com.apple.kpi.libkern</key>
+		<string>10.8</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>10.8</string>
+		<key>com.apple.iokit.IOHIDFamily</key>
+		<string>1.6.6</string>
+	</dict>
 </dict>
 </plist>
