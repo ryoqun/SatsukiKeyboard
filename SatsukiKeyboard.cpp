@@ -321,7 +321,7 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
           dispatchShiftUp();
         }
       } else {
-        dispatchPressDown(kHIDUsage_KeyboardSpacebar);
+          dispatchPressDown(kHIDUsage_KeyboardSpacebar);
       }
       resetSpaceMode();
     } else {
@@ -345,6 +345,40 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
     } else {
       resetTenkeyMode();
     }
+  } else if (usage == kHIDUsage_KeyboardSlash) {
+      if (isPressedDown(value)) {
+          ignore = true;
+          controlMode = true;
+          dispatchPressDown(kHIDUsage_KeyboardRightControl);
+      } else if (isPressedUp(value)) {
+          dispatchPressUp(kHIDUsage_KeyboardRightControl);
+          if (controlModeUsed) {
+              ignore = true;
+              controlModeUsed = false;
+          } else {
+              dispatchPressDown(kHIDUsage_KeyboardSlash);
+          }
+          controlMode = false;
+      } else {
+          printf("unrecognized key event value: %u\n", (unsigned int)value);
+      }
+  } else if (usage == kHIDUsage_KeyboardZ) {
+      if (isPressedDown(value)) {
+          ignore = true;
+          controlMode = true;
+          dispatchPressDown(kHIDUsage_KeyboardRightControl);
+      } else if (isPressedUp(value)) {
+          dispatchPressUp(kHIDUsage_KeyboardRightControl);
+          if (controlModeUsed) {
+              ignore = true;
+              controlModeUsed = false;
+          } else {
+              dispatchPressDown(kHIDUsage_KeyboardZ);
+          }
+          controlMode = false;
+      } else {
+          printf("unrecognized key event value: %u\n", (unsigned int)value);
+      }
   }
 
   if (ignore) {
@@ -376,6 +410,12 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       translateTenkeyMode(originalUsage, usage);
     }
   }
+
+    if (controlMode) {
+        if (isPressedDown(value)) {
+            controlModeUsed = true;
+        }
+    }
 
   dispatch(usage, value, options);
 

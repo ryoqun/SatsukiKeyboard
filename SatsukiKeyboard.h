@@ -23,6 +23,7 @@ private:
   bool spaceMode, spaceModeUsed;
   bool shiftMode;
   bool tenkeyMode, tenkeyModeUsed;
+  bool controlMode, controlModeUsed;
   bool shiftPressed;
 
   AbsoluteTime currentTimeStamp;
