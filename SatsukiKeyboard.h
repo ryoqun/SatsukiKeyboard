@@ -25,6 +25,7 @@ private:
   bool tenkeyMode, tenkeyModeUsed;
   bool controlMode, controlModeUsed;
   bool shiftPressed;
+  bool commandMode, commandModeUsed;
 
   AbsoluteTime currentTimeStamp;
   UInt32 currentUsagePage;

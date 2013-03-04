@@ -27,6 +27,7 @@ void SatsukiKeyboard::resetMode()
   resetSpaceMode();
   resetShiftMode();
   resetTenkeyMode();
+  commandMode = commandModeUsed = false;
 }
 
 void SatsukiKeyboard::resetSpaceMode()
@@ -312,6 +313,9 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
 
   if (usage == kHIDUsage_KeyboardSpacebar) {
     if (isPressedDown(value)) {
+        if(commandMode) {
+            commandModeUsed = true;
+        }
       ignore = true;
       spaceMode = true;
     } else if (isPressedUp(value)) {
@@ -379,7 +383,24 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       } else {
           printf("unrecognized key event value: %u\n", (unsigned int)value);
       }
-  }
+  } else if (usage == kHIDUsage_KeyboardPeriod) {
+    if (isPressedDown(value)) {
+        ignore = true;
+        commandMode = true;
+        dispatchPressDown(kHIDUsage_KeyboardRightGUI);
+    } else if (isPressedUp(value)) {
+        dispatchPressUp(kHIDUsage_KeyboardRightGUI);
+        if (commandModeUsed) {
+            ignore = true;
+            commandModeUsed = false;
+        } else {
+            dispatchPressDown(kHIDUsage_KeyboardPeriod);
+        }
+        commandMode = false;
+    } else {
+        printf("unrecognized key event value: %u\n", (unsigned int)value);
+    }
+}
 
   if (ignore) {
     return;
@@ -414,6 +435,12 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
     if (controlMode) {
         if (isPressedDown(value)) {
             controlModeUsed = true;
+        }
+    }
+    
+    if(commandMode) {
+        if(isPressedDown(value)) {
+            commandModeUsed = true;
         }
     }
 
