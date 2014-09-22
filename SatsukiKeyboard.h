@@ -20,6 +20,8 @@ public:
                                      IOOptionBits options=0);
 
   void emit(KeyEvent key_event);
+  void space_mode(char flag);
+
 private:
   static const UInt32 PRESS_DOWN = 1;
   static const UInt32 PRESS_UP = 0;
@@ -36,6 +38,7 @@ private:
   UInt32 currentUsagePage;
 
   struct satsukiContext mSatsukiContext;
+    void *mStack[4096];
 
   bool isPressedDown(UInt32 value);
   bool isPressedUp(UInt32 value);

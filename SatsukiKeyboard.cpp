@@ -13,7 +13,7 @@ bool SatsukiKeyboard::start(IOService *provider)
   printf("SatsukiKeyboard start\n");
   printf("SMC\n");
   resetMode();
-  satsukiContext_Init(&mSatsukiContext, (struct Turnstile*)this);
+  satsukiContext_Init(&mSatsukiContext, (struct Turnstile*)this, (const struct TurnstileState**)mStack);
   satsukiContext_EnterStartState(&mSatsukiContext);
   return super::start(provider);
 }
@@ -311,13 +311,26 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
            (unsigned int)key_event.options);
 }
 
+void SatsukiKeyboard::space_mode(char flag){
+    printf("SMC space mode: %d!!!", (int)flag);
+}
+
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
                                          UInt32 value,
                                          IOOptionBits options)
 {
   bool ignore = false;
 
-    KeyEvent ke = {usage, value, options, 0, 0, 0, 0, 0};
+  KeyEvent ke = {
+      usage,
+      value,
+      options,
+      usage == kHIDUsage_KeyboardSpacebar,
+      0, //usage == kHIDUsage_KeyboardSlash,
+      0, //usage == kHIDUsage_KeyboardZ,
+      0, //usage == kHIDUsage_KeyboardMuhenkan,
+      0, //usage == kHIDUsage_KeyboardHenkan,
+  };
 
   printf("Key event: %u %u %u\n",
          (unsigned int) usage,

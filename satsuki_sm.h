@@ -51,8 +51,9 @@ extern void satsukiContext_EnterStartState(struct satsukiContext*);
 extern void satsukiContext_keydown(struct satsukiContext*, KeyEvent);
 extern void satsukiContext_keyup(struct satsukiContext*, KeyEvent);
 #else
-#define satsukiContext_Init(fsm, owner) \
+#define satsukiContext_Init(fsm, owner, stack) \
 FSM_INIT((fsm), &MainMap_Normal); \
+FSM_STACK((fsm), stack); \
 (fsm)->_owner = (owner);
 
 #define satsukiContext_EnterStartState(fsm) \
