@@ -19,6 +19,7 @@ public:
                                      UInt32 value,
                                      IOOptionBits options=0);
 
+  void emit(KeyEvent key_event);
 private:
   static const UInt32 PRESS_DOWN = 1;
   static const UInt32 PRESS_UP = 0;

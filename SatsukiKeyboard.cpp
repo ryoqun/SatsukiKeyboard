@@ -304,13 +304,20 @@ bool SatsukiKeyboard::translateSpaceMode(UInt32 originalUsage,
   return translated;
 }
 
+void SatsukiKeyboard::emit(KeyEvent key_event) {
+    printf("Satsuki Key event: %u %u %u\n",
+           (unsigned int)key_event.usage,
+           (unsigned int)key_event.value,
+           (unsigned int)key_event.options);
+}
+
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
                                          UInt32 value,
                                          IOOptionBits options)
 {
   bool ignore = false;
 
-    KeyEvent ke = {0, 0, 0, 0, 0};
+    KeyEvent ke = {usage, value, options, 0, 0, 0, 0, 0};
 
   printf("Key event: %u %u %u\n",
          (unsigned int) usage,

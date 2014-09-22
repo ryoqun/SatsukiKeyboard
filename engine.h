@@ -11,9 +11,9 @@
 #ifndef SatsukiKeyboard_engine_h
 #define SatsukiKeyboard_engine_h
 
-#include "engine.h"
-
 typedef struct {
+    UInt32 usage, value;
+    IOOptionBits options;
     char is_space, is_slash, is_z, is_tenkey, is_shift;
 } KeyEvent;
 
@@ -27,19 +27,16 @@ typedef struct {
 
 typedef struct Turnstile Context;
 
-void Turnstile_buffer(Context* ctxt, KeyEvent keyevent) {};
-void Turnstile_flush(Context* ctxt) {};
-void Turnstile_emit(Context* ctxt, KeyEvent keyevent) {
-    printf("emit!!!!!!!!");
-};
-void Turnstile_emit_z(Context* ctxt) {};
-void Turnstile_emit_space(Context* ctxt) {};
-void Turnstile_emit_slash(Context* ctxt) {};
-void Turnstile_space_mode(Context* ctxt, char flag) {};
-void Turnstile_control_mode(Context* ctxt, char flag) {};
-void Turnstile_shift_mode(Context* ctxt, char flag) {};
-void Turnstile_tenkey_mode(Context* ctxt, char flag) {};
-
+void Turnstile_buffer(Context* ctxt, KeyEvent keyevent);
+void Turnstile_flush(Context* ctxt);
+void Turnstile_emit(Context* ctxt, KeyEvent keyevent);
+void Turnstile_emit_z(Context* ctxt);
+void Turnstile_emit_space(Context* ctxt);
+void Turnstile_emit_slash(Context* ctxt);
+void Turnstile_space_mode(Context* ctxt, char flag);
+void Turnstile_control_mode(Context* ctxt, char flag);
+void Turnstile_shift_mode(Context* ctxt, char flag);
+void Turnstile_tenkey_mode(Context* ctxt, char flag);
 
 
 #endif

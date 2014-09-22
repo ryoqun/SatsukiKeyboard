@@ -14,6 +14,7 @@
 		E27D865519D02626007DD8FE /* satsuki_sm.h in Headers */ = {isa = PBXBuildFile; fileRef = E27D865419D02626007DD8FE /* satsuki_sm.h */; };
 		E27D865719D02C9C007DD8FE /* satsuki_sm.c in Sources */ = {isa = PBXBuildFile; fileRef = E27D865619D02C9C007DD8FE /* satsuki_sm.c */; };
 		E27D865A19D02CEA007DD8FE /* engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E27D865919D02CEA007DD8FE /* engine.h */; };
+		E27D865C19D038A8007DD8FE /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E27D865B19D038A8007DD8FE /* engine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		E27D865419D02626007DD8FE /* satsuki_sm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = satsuki_sm.h; sourceTree = "<group>"; };
 		E27D865619D02C9C007DD8FE /* satsuki_sm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = satsuki_sm.c; sourceTree = "<group>"; };
 		E27D865919D02CEA007DD8FE /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
+		E27D865B19D038A8007DD8FE /* engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = engine.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				E27D865419D02626007DD8FE /* satsuki_sm.h */,
 				E27D865619D02C9C007DD8FE /* satsuki_sm.c */,
 				E27D865919D02CEA007DD8FE /* engine.h */,
+				E27D865B19D038A8007DD8FE /* engine.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E27D865719D02C9C007DD8FE /* satsuki_sm.c in Sources */,
+				E27D865C19D038A8007DD8FE /* engine.cpp in Sources */,
 				32D94FCA0562CBF700B6AF17 /* SatsukiKeyboard.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
