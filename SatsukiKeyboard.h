@@ -26,9 +26,11 @@ private:
   bool controlMode, controlModeUsed;
   bool shiftPressed;
   bool commandMode, commandModeUsed;
-
+  
   AbsoluteTime currentTimeStamp;
   UInt32 currentUsagePage;
+
+  struct Turnstile;
 
   bool isPressedDown(UInt32 value);
   bool isPressedUp(UInt32 value);

@@ -10,6 +10,10 @@
 		32D94FC60562CBF700B6AF17 /* SatsukiKeyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* SatsukiKeyboard.h */; };
 		32D94FC80562CBF700B6AF17 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		32D94FCA0562CBF700B6AF17 /* SatsukiKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A224C3FFF42367911CA2CB7 /* SatsukiKeyboard.cpp */; settings = {ATTRIBUTES = (); }; };
+		E27D865319D02542007DD8FE /* statemap.h in Headers */ = {isa = PBXBuildFile; fileRef = E27D865219D02542007DD8FE /* statemap.h */; };
+		E27D865519D02626007DD8FE /* satsuki_sm.h in Headers */ = {isa = PBXBuildFile; fileRef = E27D865419D02626007DD8FE /* satsuki_sm.h */; };
+		E27D865719D02C9C007DD8FE /* satsuki_sm.c in Sources */ = {isa = PBXBuildFile; fileRef = E27D865619D02C9C007DD8FE /* satsuki_sm.c */; };
+		E27D865A19D02CEA007DD8FE /* engine.h in Headers */ = {isa = PBXBuildFile; fileRef = E27D865919D02CEA007DD8FE /* engine.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +23,10 @@
 		32D94FCF0562CBF700B6AF17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32D94FD00562CBF700B6AF17 /* SatsukiKeyboard.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SatsukiKeyboard.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA8362C06AD9B9200E5AC22 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
+		E27D865219D02542007DD8FE /* statemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = statemap.h; sourceTree = "<group>"; };
+		E27D865419D02626007DD8FE /* satsuki_sm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = satsuki_sm.h; sourceTree = "<group>"; };
+		E27D865619D02C9C007DD8FE /* satsuki_sm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = satsuki_sm.c; sourceTree = "<group>"; };
+		E27D865919D02CEA007DD8FE /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +73,10 @@
 			children = (
 				1A224C3EFF42367911CA2CB7 /* SatsukiKeyboard.h */,
 				1A224C3FFF42367911CA2CB7 /* SatsukiKeyboard.cpp */,
+				E27D865219D02542007DD8FE /* statemap.h */,
+				E27D865419D02626007DD8FE /* satsuki_sm.h */,
+				E27D865619D02C9C007DD8FE /* satsuki_sm.c */,
+				E27D865919D02CEA007DD8FE /* engine.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -76,7 +88,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E27D865A19D02CEA007DD8FE /* engine.h in Headers */,
 				32D94FC60562CBF700B6AF17 /* SatsukiKeyboard.h in Headers */,
+				E27D865519D02626007DD8FE /* satsuki_sm.h in Headers */,
+				E27D865319D02542007DD8FE /* statemap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +123,8 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB91DD08733DB10010E9CD /* Build configuration list for PBXProject "SatsukiKeyboard" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -153,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E27D865719D02C9C007DD8FE /* satsuki_sm.c in Sources */,
 				32D94FCA0562CBF700B6AF17 /* SatsukiKeyboard.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,6 +236,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.8;
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -230,6 +249,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.8;
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};

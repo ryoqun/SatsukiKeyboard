@@ -3,6 +3,9 @@
 
 #include "SatsukiKeyboard.h"
 
+#include "statemap.h"
+#include "satsuki_sm.h"
+
 #define super IOHIDEventDriver
 
 OSDefineMetaClassAndStructors(SatsukiKeyboard, IOHIDEventDriver)
@@ -10,6 +13,7 @@ OSDefineMetaClassAndStructors(SatsukiKeyboard, IOHIDEventDriver)
 bool SatsukiKeyboard::start(IOService *provider)
 {
   printf("SatsukiKeyboard start\n");
+  printf("SMC\n");
   resetMode();
   return super::start(provider);
 }
