@@ -24,24 +24,43 @@
 	<string>1.0</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>Zippy Technology Corp., Sanwa Supply Inc. Small Keyboard</key>
+		<key>new keyborad</key>
 		<dict>
-			<key>ProductID</key>
-			<integer>25392</integer>
-			<key>VendorID</key>
-			<integer>2458</integer>
-			<key>IOKitDebug</key>
-			<integer>0</integer>
-			<key>CFBundleIdentifier</key>
-			<string>com.github.ryoqun.driver.${PRODUCT_NAME:rfc1034identifier}</string>
-			<key>IOResourceMatch</key>
-			<string>IOKit</string>
-			<key>IOMatchCategory</key>
-			<string>SatsukiKeyboard</string>
-			<key>IOClass</key>
-			<string>SatsukiKeyboard</string>
 			<key>IOProviderClass</key>
 			<string>IOHIDInterface</string>
+			<key>IOClass</key>
+			<string>SatsukiKeyboard</string>
+			<key>IOMatchCategory</key>
+			<string>SatsukiKeyboard</string>
+			<key>IOResourceMatch</key>
+			<string>IOKit</string>
+			<key>CFBundleIdentifier</key>
+			<string>com.github.ryoqun.driver.${PRODUCT_NAME:rfc1034identifier}</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>VendorID</key>
+			<integer>1455</integer>
+			<key>ProductID</key>
+			<integer>33382</integer>
+		</dict>
+		<key>Zippy Technology Corp., Sanwa Supply Inc. Small Keyboard</key>
+		<dict>
+			<key>IOProviderClass</key>
+			<string>IOHIDInterface</string>
+			<key>IOClass</key>
+			<string>SatsukiKeyboard</string>
+			<key>IOMatchCategory</key>
+			<string>SatsukiKeyboard</string>
+			<key>IOResourceMatch</key>
+			<string>IOKit</string>
+			<key>CFBundleIdentifier</key>
+			<string>com.github.ryoqun.driver.${PRODUCT_NAME:rfc1034identifier}</string>
+			<key>IOKitDebug</key>
+			<integer>0</integer>
+			<key>VendorID</key>
+			<integer>2458</integer>
+			<key>ProductID</key>
+			<integer>25392</integer>
 		</dict>
 	</dict>
 	<key>OSBundleLibraries</key>
