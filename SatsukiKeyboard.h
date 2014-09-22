@@ -20,7 +20,8 @@ public:
                                      IOOptionBits options=0);
 
   void emit(KeyEvent key_event);
-  void space_mode(char flag);
+    void space_mode(char flag);
+    void tenkey_mode(char flag);
 
 private:
   static const UInt32 PRESS_DOWN = 1;

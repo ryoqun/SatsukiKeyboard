@@ -45,4 +45,6 @@ void Turnstile_shift_mode(Context* ctxt, char flag) {
 };
 
 void Turnstile_tenkey_mode(Context* ctxt, char flag) {
+    SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    keyboard->tenkey_mode(flag);
 };

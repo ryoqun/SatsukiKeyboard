@@ -315,6 +315,10 @@ void SatsukiKeyboard::space_mode(char flag){
     printf("SMC space mode: %d!!!", (int)flag);
 }
 
+void SatsukiKeyboard::tenkey_mode(char flag){
+    printf("SMC tenkey mode: %d!!!", (int)flag);
+}
+
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
                                          UInt32 value,
                                          IOOptionBits options)
@@ -328,7 +332,7 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       usage == kHIDUsage_KeyboardSpacebar,
       0, //usage == kHIDUsage_KeyboardSlash,
       0, //usage == kHIDUsage_KeyboardZ,
-      0, //usage == kHIDUsage_KeyboardMuhenkan,
+      usage == kHIDUsage_KeyboardMuhenkan,
       0, //usage == kHIDUsage_KeyboardHenkan,
   };
 
