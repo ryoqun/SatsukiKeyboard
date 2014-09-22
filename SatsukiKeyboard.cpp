@@ -3,8 +3,6 @@
 
 #include "SatsukiKeyboard.h"
 
-#include "statemap.h"
-#include "satsuki_sm.h"
 
 #define super IOHIDEventDriver
 
@@ -15,6 +13,8 @@ bool SatsukiKeyboard::start(IOService *provider)
   printf("SatsukiKeyboard start\n");
   printf("SMC\n");
   resetMode();
+  satsukiContext_Init(&mSatsukiContext, (struct Turnstile*)this);
+  satsukiContext_EnterStartState(&mSatsukiContext);
   return super::start(provider);
 }
 
@@ -310,11 +310,20 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
 {
   bool ignore = false;
 
+    KeyEvent ke = {0, 0, 0, 0, 0};
+
   printf("Key event: %u %u %u\n",
          (unsigned int) usage,
          (unsigned int)value,
          (unsigned int)options);
 
+    if(isPressedDown(value)) {
+        satsukiContext_keydown(&mSatsukiContext, ke);
+    } else if (isPressedUp(value)){
+        satsukiContext_keyup(&mSatsukiContext, ke);
+    }
+    
+    
   if (usage == kHIDUsage_KeyboardSpacebar) {
     if (isPressedDown(value)) {
         if(commandMode) {

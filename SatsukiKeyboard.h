@@ -1,5 +1,9 @@
 #include <IOKit/hidevent/IOHIDEventDriver.h>
 
+#include "statemap.h"
+#include "satsuki_sm.h"
+
+
 class SatsukiKeyboard : public IOHIDEventDriver
 {
   OSDeclareDefaultStructors(SatsukiKeyboard)
@@ -30,7 +34,7 @@ private:
   AbsoluteTime currentTimeStamp;
   UInt32 currentUsagePage;
 
-  struct Turnstile;
+  struct satsukiContext mSatsukiContext;
 
   bool isPressedDown(UInt32 value);
   bool isPressedUp(UInt32 value);

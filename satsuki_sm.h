@@ -44,6 +44,7 @@ struct satsukiContext
     FSM_MEMBERS(Turnstile)
 };
 
+
 #ifdef NO_SATSUKI_SM_MACRO
 extern void satsukiContext_Init(struct satsukiContext*, struct Turnstile*);
 extern void satsukiContext_EnterStartState(struct satsukiContext*);
@@ -55,7 +56,9 @@ FSM_INIT((fsm), &MainMap_Normal); \
 (fsm)->_owner = (owner);
 
 #define satsukiContext_EnterStartState(fsm) \
-ENTRY_STATE(getState(fsm));
+if (getState(fsm)->Entry != NULL) { \
+getState(fsm)->Entry(fsm); \
+}
 
 #define satsukiContext_keydown(fsm, event) \
 getState(fsm)->keydown(fsm, event);

@@ -6,11 +6,12 @@
 //
 //
 
+#include <IOKit/IOLib.h>
+
 #ifndef SatsukiKeyboard_engine_h
 #define SatsukiKeyboard_engine_h
 
 #include "engine.h"
-
 
 typedef struct {
     char is_space, is_slash, is_z, is_tenkey, is_shift;
@@ -28,7 +29,9 @@ typedef struct Turnstile Context;
 
 void Turnstile_buffer(Context* ctxt, KeyEvent keyevent) {};
 void Turnstile_flush(Context* ctxt) {};
-void Turnstile_emit(Context* ctxt, KeyEvent keyevent) {};
+void Turnstile_emit(Context* ctxt, KeyEvent keyevent) {
+    printf("emit!!!!!!!!");
+};
 void Turnstile_emit_z(Context* ctxt) {};
 void Turnstile_emit_space(Context* ctxt) {};
 void Turnstile_emit_slash(Context* ctxt) {};
