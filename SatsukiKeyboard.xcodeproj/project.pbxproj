@@ -26,7 +26,7 @@
 		8DA8362C06AD9B9200E5AC22 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		E27D865219D02542007DD8FE /* statemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = statemap.h; sourceTree = "<group>"; };
 		E27D865419D02626007DD8FE /* satsuki_sm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = satsuki_sm.h; sourceTree = "<group>"; };
-		E27D865619D02C9C007DD8FE /* satsuki_sm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = satsuki_sm.c; sourceTree = "<group>"; };
+		E27D865619D02C9C007DD8FE /* satsuki_sm.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = satsuki_sm.c; sourceTree = "<group>"; tabWidth = 2; };
 		E27D865919D02CEA007DD8FE /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
 		E27D865B19D038A8007DD8FE /* engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = engine.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */

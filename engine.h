@@ -22,8 +22,8 @@ typedef struct {
 #define KEY_Z 2
 #define KEY_SHIFT 3
 #define KEY_TENKEY 4
-#define True 0
-#define False 1
+#define True 1
+#define False 0
 
 typedef struct Turnstile Context;
 
