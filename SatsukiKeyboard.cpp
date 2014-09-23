@@ -358,23 +358,26 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
 }
 
 void SatsukiKeyboard::space_mode(char flag){
-    printf("SMC space mode: %d!!!\n", (int)flag);
-    spaceMode = flag;
+  printf("SMC space mode: %d!!!\n", (int)flag);
+  spaceMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
+  }
 }
 
 void SatsukiKeyboard::tenkey_mode(char flag){
-    printf("SMC tenkey mode: %d!!!\n", (int)flag);
-    tenkeyMode = flag;
+  printf("SMC tenkey mode: %d!!!\n", (int)flag);
+  tenkeyMode = flag;
 }
 
 void SatsukiKeyboard::shift_mode(char flag){
-    printf("SMC shift mode: %d!!!\n", (int)flag);
-    shiftMode = flag;
+  printf("SMC shift mode: %d!!!\n", (int)flag);
+  shiftMode = flag;
 }
 
 void SatsukiKeyboard::control_mode(char flag){
-    printf("SMC control mode: %d!!!\n", (int)flag);
-    controlMode = flag;
+  printf("SMC control mode: %d!!!\n", (int)flag);
+  controlMode = flag;
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
