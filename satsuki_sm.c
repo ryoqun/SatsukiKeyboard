@@ -9,24 +9,24 @@
 #include "satsuki_sm.h"
 
 #define getOwner(fsm) \
-(fsm)->_owner
+    (fsm)->_owner
 
 #define POPULATE_STATE(state) \
-state##_Entry, \
-state##_Exit, \
-state##_keydown, \
-state##_keyup, \
-state##_Default
+    state##_Entry, \
+    state##_Exit, \
+    state##_keydown, \
+    state##_keyup, \
+    state##_Default
 
 #define ENTRY_STATE(state) \
-if ((state)->Entry != NULL) { \
-(state)->Entry(fsm); \
-}
+    if ((state)->Entry != NULL) { \
+        (state)->Entry(fsm); \
+    }
 
 #define EXIT_STATE(state) \
-if ((state)->Exit != NULL) { \
-(state)->Exit(fsm); \
-}
+    if ((state)->Exit != NULL) { \
+        (state)->Exit(fsm); \
+    }
 
 static void TurnstileState_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
@@ -58,6 +58,26 @@ static void TurnstileState_Default(struct satsukiContext *fsm)
 #define MainMap_Tenkey_Default TurnstileState_Default
 #define MainMap_Tenkey_Entry NULL
 #define MainMap_Tenkey_Exit NULL
+#define MainMap_PostSpace_keydown TurnstileState_keydown
+#define MainMap_PostSpace_keyup TurnstileState_keyup
+#define MainMap_PostSpace_Default TurnstileState_Default
+#define MainMap_PostSpace_Entry NULL
+#define MainMap_PostSpace_Exit NULL
+#define MainMap_NestedSpace_keydown TurnstileState_keydown
+#define MainMap_NestedSpace_keyup TurnstileState_keyup
+#define MainMap_NestedSpace_Default TurnstileState_Default
+#define MainMap_NestedSpace_Entry NULL
+#define MainMap_NestedSpace_Exit NULL
+#define MainMap_NestedZKeyControl_keydown TurnstileState_keydown
+#define MainMap_NestedZKeyControl_keyup TurnstileState_keyup
+#define MainMap_NestedZKeyControl_Default TurnstileState_Default
+#define MainMap_NestedZKeyControl_Entry NULL
+#define MainMap_NestedZKeyControl_Exit NULL
+#define MainMap_NestedSlashControl_keydown TurnstileState_keydown
+#define MainMap_NestedSlashControl_keyup TurnstileState_keyup
+#define MainMap_NestedSlashControl_Default TurnstileState_Default
+#define MainMap_NestedSlashControl_Entry NULL
+#define MainMap_NestedSlashControl_Exit NULL
 #define MainMap_PreSpace_keydown TurnstileState_keydown
 #define MainMap_PreSpace_keyup TurnstileState_keyup
 #define MainMap_PreSpace_Default TurnstileState_Default
@@ -105,7 +125,7 @@ static void TurnstileState_Default(struct satsukiContext *fsm)
 static void MainMap_Normal_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_space ) {
         /* No actions. */
         pushState(fsm, &MainMap_PreSpace);
@@ -133,11 +153,22 @@ static void MainMap_Normal_keydown(struct satsukiContext *fsm, KeyEvent event)
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
     }
+}
+
+#undef MainMap_Normal_keyup
+static void MainMap_Normal_keyup(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+    const struct TurnstileState* EndStateName = getState(fsm);
+
+    clearState(fsm);
+    Turnstile_emit(ctxt, event);
+    setState(fsm, EndStateName);
 }
 
 const struct TurnstileState MainMap_Normal = { POPULATE_STATE(MainMap_Normal), 0 };
@@ -146,7 +177,7 @@ const struct TurnstileState MainMap_Normal = { POPULATE_STATE(MainMap_Normal), 0
 void MainMap_Shift_Entry(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_shift_mode(ctxt, True);
 }
 
@@ -154,7 +185,7 @@ void MainMap_Shift_Entry(struct satsukiContext *fsm)
 void MainMap_Shift_Exit(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_shift_mode(ctxt, False);
 }
 
@@ -163,7 +194,7 @@ static void MainMap_Shift_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
-    
+
     clearState(fsm);
     Turnstile_emit(ctxt, event);
     setState(fsm, EndStateName);
@@ -173,7 +204,7 @@ static void MainMap_Shift_keydown(struct satsukiContext *fsm, KeyEvent event)
 static void MainMap_Shift_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_shift ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
@@ -181,7 +212,7 @@ static void MainMap_Shift_keyup(struct satsukiContext *fsm, KeyEvent event)
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
@@ -194,7 +225,7 @@ const struct TurnstileState MainMap_Shift = { POPULATE_STATE(MainMap_Shift), 1 }
 void MainMap_Tenkey_Entry(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_tenkey_mode(ctxt, True);
 }
 
@@ -202,7 +233,7 @@ void MainMap_Tenkey_Entry(struct satsukiContext *fsm)
 void MainMap_Tenkey_Exit(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_tenkey_mode(ctxt, False);
 }
 
@@ -211,7 +242,7 @@ static void MainMap_Tenkey_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
-    
+
     clearState(fsm);
     Turnstile_emit(ctxt, event);
     setState(fsm, EndStateName);
@@ -221,7 +252,7 @@ static void MainMap_Tenkey_keydown(struct satsukiContext *fsm, KeyEvent event)
 static void MainMap_Tenkey_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_tenkey ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
@@ -229,7 +260,7 @@ static void MainMap_Tenkey_keyup(struct satsukiContext *fsm, KeyEvent event)
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
@@ -238,11 +269,203 @@ static void MainMap_Tenkey_keyup(struct satsukiContext *fsm, KeyEvent event)
 
 const struct TurnstileState MainMap_Tenkey = { POPULATE_STATE(MainMap_Tenkey), 2 };
 
+#undef MainMap_PostSpace_keydown
+static void MainMap_PostSpace_keydown(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+    const struct TurnstileState* EndStateName = getState(fsm);
+
+    clearState(fsm);
+    Turnstile_emit(ctxt, event);
+    setState(fsm, EndStateName);
+}
+
+#undef MainMap_PostSpace_keyup
+static void MainMap_PostSpace_keyup(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_pop_state(ctxt);
+        popState(fsm);
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+const struct TurnstileState MainMap_PostSpace = { POPULATE_STATE(MainMap_PostSpace), 3 };
+
+#undef MainMap_NestedSpace_Entry
+void MainMap_NestedSpace_Entry(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_space_mode(ctxt, True);
+}
+
+#undef MainMap_NestedSpace_Exit
+void MainMap_NestedSpace_Exit(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_space_mode(ctxt, False);
+}
+
+#undef MainMap_NestedSpace_keydown
+static void MainMap_NestedSpace_keydown(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+    const struct TurnstileState* EndStateName = getState(fsm);
+
+    clearState(fsm);
+    Turnstile_emit(ctxt, event);
+    setState(fsm, EndStateName);
+}
+
+#undef MainMap_NestedSpace_keyup
+static void MainMap_NestedSpace_keyup(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_pop_state(ctxt);
+        popState(fsm);
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+const struct TurnstileState MainMap_NestedSpace = { POPULATE_STATE(MainMap_NestedSpace), 4 };
+
+#undef MainMap_NestedZKeyControl_Entry
+void MainMap_NestedZKeyControl_Entry(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_control_mode(ctxt, True);
+}
+
+#undef MainMap_NestedZKeyControl_Exit
+void MainMap_NestedZKeyControl_Exit(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_control_mode(ctxt, False);
+}
+
+#undef MainMap_NestedZKeyControl_keydown
+static void MainMap_NestedZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_z ) {
+        /* No actions. */
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+#undef MainMap_NestedZKeyControl_keyup
+static void MainMap_NestedZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_z ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_pop_state(ctxt);
+        popState(fsm);
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+const struct TurnstileState MainMap_NestedZKeyControl = { POPULATE_STATE(MainMap_NestedZKeyControl), 5 };
+
+#undef MainMap_NestedSlashControl_Entry
+void MainMap_NestedSlashControl_Entry(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_control_mode(ctxt, True);
+}
+
+#undef MainMap_NestedSlashControl_Exit
+void MainMap_NestedSlashControl_Exit(struct satsukiContext *fsm)
+{
+    struct Turnstile *ctxt = getOwner(fsm);
+
+    Turnstile_control_mode(ctxt, False);
+}
+
+#undef MainMap_NestedSlashControl_keydown
+static void MainMap_NestedSlashControl_keydown(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_slash ) {
+        /* No actions. */
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+#undef MainMap_NestedSlashControl_keyup
+static void MainMap_NestedSlashControl_keyup(struct satsukiContext *fsm, KeyEvent event)
+{
+    struct Turnstile* ctxt = getOwner(fsm);
+
+    if ( event.is_slash ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_pop_state(ctxt);
+        popState(fsm);
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
+}
+
+const struct TurnstileState MainMap_NestedSlashControl = { POPULATE_STATE(MainMap_NestedSlashControl), 6 };
+
 #undef MainMap_PreSpace_keydown
 static void MainMap_PreSpace_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
@@ -279,25 +502,38 @@ static void MainMap_PreSpace_keydown(struct satsukiContext *fsm, KeyEvent event)
 static void MainMap_PreSpace_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_space ) {
         EXIT_STATE(getState(fsm));
         clearState(fsm);
         Turnstile_emit_space(ctxt);
         popState(fsm);
     }
-    else {
+    else if ( event.is_slash ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_emit_slash(ctxt);
+        setState(fsm, &MainMap_PostSpace);
+        ENTRY_STATE(getState(fsm));
+    }
+    else if ( event.is_z ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_emit_z(ctxt);
+        setState(fsm, &MainMap_PostSpace);
+        ENTRY_STATE(getState(fsm));
+    }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
 }
 
-const struct TurnstileState MainMap_PreSpace = { POPULATE_STATE(MainMap_PreSpace), 3 };
+const struct TurnstileState MainMap_PreSpace = { POPULATE_STATE(MainMap_PreSpace), 7 };
 
 #undef MainMap_Space_Entry
 void MainMap_Space_Entry(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_space_mode(ctxt, True);
 }
 
@@ -305,7 +541,7 @@ void MainMap_Space_Entry(struct satsukiContext *fsm)
 void MainMap_Space_Exit(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_space_mode(ctxt, False);
 }
 
@@ -313,7 +549,7 @@ void MainMap_Space_Exit(struct satsukiContext *fsm)
 static void MainMap_Space_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         /* No actions. */
         pushState(fsm, &MainMap_PreSlashControl);
@@ -329,7 +565,7 @@ static void MainMap_Space_keydown(struct satsukiContext *fsm, KeyEvent event)
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
@@ -340,28 +576,40 @@ static void MainMap_Space_keydown(struct satsukiContext *fsm, KeyEvent event)
 static void MainMap_Space_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_space ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
         popState(fsm);
     }
+    else if ( event.is_slash ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedSpace);
+        ENTRY_STATE(getState(fsm));
+    }
+    else if ( event.is_z ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedSpace);
+        ENTRY_STATE(getState(fsm));
+    }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
     }
 }
 
-const struct TurnstileState MainMap_Space = { POPULATE_STATE(MainMap_Space), 4 };
+const struct TurnstileState MainMap_Space = { POPULATE_STATE(MainMap_Space), 8 };
 
 #undef MainMap_PreZKeyControl_keydown
 static void MainMap_PreZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_z ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
@@ -389,25 +637,31 @@ static void MainMap_PreZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent 
 static void MainMap_PreZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_z ) {
         EXIT_STATE(getState(fsm));
         clearState(fsm);
         Turnstile_emit_z(ctxt);
         popState(fsm);
     }
-    else {
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_emit_slash(ctxt);
+        setState(fsm, &MainMap_NestedZKeyControl);
+        ENTRY_STATE(getState(fsm));
+    }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
 }
 
-const struct TurnstileState MainMap_PreZKeyControl = { POPULATE_STATE(MainMap_PreZKeyControl), 5 };
+const struct TurnstileState MainMap_PreZKeyControl = { POPULATE_STATE(MainMap_PreZKeyControl), 9 };
 
 #undef MainMap_PreSlashControl_keydown
 static void MainMap_PreSlashControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
@@ -435,25 +689,31 @@ static void MainMap_PreSlashControl_keydown(struct satsukiContext *fsm, KeyEvent
 static void MainMap_PreSlashControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         EXIT_STATE(getState(fsm));
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
         popState(fsm);
     }
-    else {
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        clearState(fsm);
+        Turnstile_emit_slash(ctxt);
+        setState(fsm, &MainMap_NestedSlashControl);
+        ENTRY_STATE(getState(fsm));
+    }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
 }
 
-const struct TurnstileState MainMap_PreSlashControl = { POPULATE_STATE(MainMap_PreSlashControl), 6 };
+const struct TurnstileState MainMap_PreSlashControl = { POPULATE_STATE(MainMap_PreSlashControl), 10 };
 
 #undef MainMap_SemiZKeyControl_keydown
 static void MainMap_SemiZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     EXIT_STATE(getState(fsm));
     clearState(fsm);
     Turnstile_control_mode(ctxt, True);
@@ -467,7 +727,7 @@ static void MainMap_SemiZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent
 static void MainMap_SemiZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_z ) {
         EXIT_STATE(getState(fsm));
         clearState(fsm);
@@ -475,6 +735,12 @@ static void MainMap_SemiZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent e
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
         popState(fsm);
+    }
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedZKeyControl);
+        ENTRY_STATE(getState(fsm));
     }
     else {
         EXIT_STATE(getState(fsm));
@@ -487,13 +753,13 @@ static void MainMap_SemiZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent e
     }
 }
 
-const struct TurnstileState MainMap_SemiZKeyControl = { POPULATE_STATE(MainMap_SemiZKeyControl), 7 };
+const struct TurnstileState MainMap_SemiZKeyControl = { POPULATE_STATE(MainMap_SemiZKeyControl), 11 };
 
 #undef MainMap_SemiSlashControl_keydown
 static void MainMap_SemiSlashControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     EXIT_STATE(getState(fsm));
     clearState(fsm);
     Turnstile_control_mode(ctxt, True);
@@ -507,7 +773,7 @@ static void MainMap_SemiSlashControl_keydown(struct satsukiContext *fsm, KeyEven
 static void MainMap_SemiSlashControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         EXIT_STATE(getState(fsm));
         clearState(fsm);
@@ -515,6 +781,12 @@ static void MainMap_SemiSlashControl_keyup(struct satsukiContext *fsm, KeyEvent 
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
         popState(fsm);
+    }
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedSlashControl);
+        ENTRY_STATE(getState(fsm));
     }
     else {
         EXIT_STATE(getState(fsm));
@@ -527,13 +799,13 @@ static void MainMap_SemiSlashControl_keyup(struct satsukiContext *fsm, KeyEvent 
     }
 }
 
-const struct TurnstileState MainMap_SemiSlashControl = { POPULATE_STATE(MainMap_SemiSlashControl), 8 };
+const struct TurnstileState MainMap_SemiSlashControl = { POPULATE_STATE(MainMap_SemiSlashControl), 12 };
 
 #undef MainMap_ZKeyControl_Entry
 void MainMap_ZKeyControl_Entry(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_control_mode(ctxt, True);
 }
 
@@ -541,7 +813,7 @@ void MainMap_ZKeyControl_Entry(struct satsukiContext *fsm)
 void MainMap_ZKeyControl_Exit(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_control_mode(ctxt, False);
 }
 
@@ -549,13 +821,18 @@ void MainMap_ZKeyControl_Exit(struct satsukiContext *fsm)
 static void MainMap_ZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_z ) {
         /* No actions. */
     }
+    else if ( event.is_space ) {
+        /* No actions. */
+        pushState(fsm, &MainMap_PreSpace);
+        ENTRY_STATE(getState(fsm));
+    }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
@@ -566,28 +843,34 @@ static void MainMap_ZKeyControl_keydown(struct satsukiContext *fsm, KeyEvent eve
 static void MainMap_ZKeyControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_z ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
         popState(fsm);
     }
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedZKeyControl);
+        ENTRY_STATE(getState(fsm));
+    }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
     }
 }
 
-const struct TurnstileState MainMap_ZKeyControl = { POPULATE_STATE(MainMap_ZKeyControl), 9 };
+const struct TurnstileState MainMap_ZKeyControl = { POPULATE_STATE(MainMap_ZKeyControl), 13 };
 
 #undef MainMap_SlashControl_Entry
 void MainMap_SlashControl_Entry(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_control_mode(ctxt, True);
 }
 
@@ -595,7 +878,7 @@ void MainMap_SlashControl_Entry(struct satsukiContext *fsm)
 void MainMap_SlashControl_Exit(struct satsukiContext *fsm)
 {
     struct Turnstile *ctxt = getOwner(fsm);
-    
+
     Turnstile_control_mode(ctxt, False);
 }
 
@@ -603,13 +886,13 @@ void MainMap_SlashControl_Exit(struct satsukiContext *fsm)
 static void MainMap_SlashControl_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         /* No actions. */
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
@@ -620,22 +903,28 @@ static void MainMap_SlashControl_keydown(struct satsukiContext *fsm, KeyEvent ev
 static void MainMap_SlashControl_keyup(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    
+
     if ( event.is_slash ) {
         EXIT_STATE(getState(fsm));
         /* No actions. */
         popState(fsm);
     }
+    else if ( event.is_space ) {
+        EXIT_STATE(getState(fsm));
+        /* No actions. */
+        setState(fsm, &MainMap_NestedSlashControl);
+        ENTRY_STATE(getState(fsm));
+    }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
-        
+
         clearState(fsm);
         Turnstile_emit(ctxt, event);
         setState(fsm, EndStateName);
     }
 }
 
-const struct TurnstileState MainMap_SlashControl = { POPULATE_STATE(MainMap_SlashControl), 10 };
+const struct TurnstileState MainMap_SlashControl = { POPULATE_STATE(MainMap_SlashControl), 14 };
 
 #ifdef NO_SATSUKI_SM_MACRO
 void satsukiContext_Init(struct satsukiContext* fsm, struct Turnstile* owner)
@@ -652,7 +941,7 @@ void satsukiContext_EnterStartState(struct satsukiContext* fsm)
 void satsukiContext_keydown(struct satsukiContext* fsm, KeyEvent event)
 {
     const struct TurnstileState* state = getState(fsm);
-    
+
     setTransition(fsm, "keydown");
     state->keydown(fsm, event);
     setTransition(fsm, NULL);
@@ -661,7 +950,7 @@ void satsukiContext_keydown(struct satsukiContext* fsm, KeyEvent event)
 void satsukiContext_keyup(struct satsukiContext* fsm, KeyEvent event)
 {
     const struct TurnstileState* state = getState(fsm);
-    
+
     setTransition(fsm, "keyup");
     state->keyup(fsm, event);
     setTransition(fsm, NULL);

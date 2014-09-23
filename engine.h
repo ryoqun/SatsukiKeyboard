@@ -37,6 +37,7 @@ void Turnstile_space_mode(Context* ctxt, char flag);
 void Turnstile_control_mode(Context* ctxt, char flag);
 void Turnstile_shift_mode(Context* ctxt, char flag);
 void Turnstile_tenkey_mode(Context* ctxt, char flag);
+void Turnstile_pop_state(Context* ctxt);
 
 
 #endif

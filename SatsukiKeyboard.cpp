@@ -305,24 +305,25 @@ bool SatsukiKeyboard::translateSpaceMode(UInt32 originalUsage,
 }
 
 void SatsukiKeyboard::emit(KeyEvent key_event) {
-    printf("Satsuki Key event: %u %u %u (space: %d slash: %d z: %d tenkey: %d shift: %d)\n",
+    printf("Satsuki emit Key event: %u %u %u (space: %d control: %d tenkey: %d shift: %d)\n",
            (unsigned int)key_event.usage,
            (unsigned int)key_event.value,
            (unsigned int)key_event.options,
-           (int)key_event.is_space,
-           (int)key_event.is_slash,
-           (int)key_event.is_z,
-           (int)key_event.is_tenkey,
-           (int)key_event.is_shift);
+           (int)spaceMode,
+           (int)controlMode,
+           (int)tenkeyMode,
+           (int)shiftMode);
     dispatch(key_event.usage, key_event.value, key_event.options);
 }
 
 void SatsukiKeyboard::space_mode(char flag){
-    printf("SMC space mode: %d!!!", (int)flag);
+    printf("SMC space mode: %d!!!\n", (int)flag);
+    spaceMode = flag;
 }
 
 void SatsukiKeyboard::tenkey_mode(char flag){
-    printf("SMC tenkey mode: %d!!!", (int)flag);
+    printf("SMC tenkey mode: %d!!!\n", (int)flag);
+    tenkeyMode = flag;
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,

@@ -24,6 +24,9 @@ void Turnstile_emit(Context* ctxt, KeyEvent key_event) {
     keyboard->emit(key_event);
 };
 
+void Turnstile_pop_state(Context* ctxt) {
+};
+
 void Turnstile_emit_z(Context* ctxt) {
 };
 
