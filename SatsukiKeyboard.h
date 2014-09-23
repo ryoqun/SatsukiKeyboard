@@ -20,8 +20,10 @@ public:
                                      IOOptionBits options=0);
 
   void emit(KeyEvent key_event);
-    void space_mode(char flag);
-    void tenkey_mode(char flag);
+  void space_mode(char flag);
+  void tenkey_mode(char flag);
+  void shift_mode(char flag);
+  
     void dispatchPressDown(UInt32 usage);
     void dispatchPressUp(UInt32 usage);
 
