@@ -61,11 +61,33 @@ bool SatsukiKeyboard::isPressedUp(UInt32 value)
 
 void SatsukiKeyboard::dispatchPressDown(UInt32 usage)
 {
+  /*dispatch(usage, PRESS_UP);KeyEvent ke = {
+    usage,
+    PRESS_DOWN,
+    0,
+    usage == kHIDUsage_KeyboardSpacebar,
+    usage == kHIDUsage_KeyboardSlash,
+    usage == kHIDUsage_KeyboardZ,
+    usage == kHIDUsage_KeyboardMuhenkan,
+    usage == kHIDUsage_KeyboardHenkan,
+  };
+  emit(ke);*/
   dispatch(usage, PRESS_DOWN);
 }
 
 void SatsukiKeyboard::dispatchPressUp(UInt32 usage)
 {
+  /*KeyEvent ke = {
+    usage,
+    PRESS_UP,
+    0,
+    usage == kHIDUsage_KeyboardSpacebar,
+    usage == kHIDUsage_KeyboardSlash,
+    usage == kHIDUsage_KeyboardZ,
+    usage == kHIDUsage_KeyboardMuhenkan,
+    usage == kHIDUsage_KeyboardHenkan,
+  };
+  emit(ke);*/
   dispatch(usage, PRESS_UP);
 }
 
@@ -373,11 +395,17 @@ void SatsukiKeyboard::tenkey_mode(char flag){
 void SatsukiKeyboard::shift_mode(char flag){
   printf("SMC shift mode: %d!!!\n", (int)flag);
   shiftMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
+  }
 }
 
 void SatsukiKeyboard::control_mode(char flag){
   printf("SMC control mode: %d!!!\n", (int)flag);
   controlMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardRightControl);
+  }
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
