@@ -19,7 +19,7 @@
 
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1A224C3EFF42367911CA2CB7 /* SatsukiKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SatsukiKeyboard.h; sourceTree = "<group>"; };
+		1A224C3EFF42367911CA2CB7 /* SatsukiKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = SatsukiKeyboard.h; sourceTree = "<group>"; tabWidth = 2; };
 		1A224C3FFF42367911CA2CB7 /* SatsukiKeyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SatsukiKeyboard.cpp; sourceTree = "<group>"; };
 		32D94FCF0562CBF700B6AF17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32D94FD00562CBF700B6AF17 /* SatsukiKeyboard.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SatsukiKeyboard.kext; sourceTree = BUILT_PRODUCTS_DIR; };

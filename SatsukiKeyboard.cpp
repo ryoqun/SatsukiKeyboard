@@ -313,7 +313,29 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
            (int)controlMode,
            (int)tenkeyMode,
            (int)shiftMode);
-    dispatch(key_event.usage, key_event.value, key_event.options);
+
+    UInt32 translatedUsage, originalUsage;
+    translatedUsage = originalUsage = key_event.usage;
+    bool shiftModifier = false;
+
+    if (spaceMode) {
+        translateSpaceMode(originalUsage, translatedUsage, shiftModifier);
+    }
+    
+
+    if (shiftModifier and !shiftPressed and isPressedDown(key_event.value) and !shiftMode) {
+        dispatchShiftDown();
+    } else if (!shiftModifier and shiftPressed and isPressedDown(key_event.value) and shiftMode) {
+        dispatchShiftUp();
+    }
+    
+    dispatch(translatedUsage, key_event.value, key_event.options);
+    
+    if (shiftModifier and shiftPressed and isPressedUp(key_event.value) and !shiftMode) {
+        dispatchShiftUp();
+    } else if (!shiftModifier and !shiftPressed and isPressedUp(key_event.value) and shiftMode) {
+        dispatchShiftDown();
+    }
 }
 
 void SatsukiKeyboard::space_mode(char flag){

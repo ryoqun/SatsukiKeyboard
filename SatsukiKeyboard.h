@@ -22,6 +22,8 @@ public:
   void emit(KeyEvent key_event);
     void space_mode(char flag);
     void tenkey_mode(char flag);
+    void dispatchPressDown(UInt32 usage);
+    void dispatchPressUp(UInt32 usage);
 
 private:
   static const UInt32 PRESS_DOWN = 1;
@@ -44,8 +46,6 @@ private:
   bool isPressedDown(UInt32 value);
   bool isPressedUp(UInt32 value);
 
-  void dispatchPressDown(UInt32 usage);
-  void dispatchPressUp(UInt32 usage);
 
   void dispatchShiftDown();
   void dispatchShiftUp();

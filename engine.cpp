@@ -11,6 +11,7 @@ extern "C" {
 }
 
 #include "SatsukiKeyboard.h"
+#include <IOKit/hid/IOHIDUsageTables.h>
 
 
 void Turnstile_buffer(Context* ctxt, KeyEvent key_event) {
@@ -31,6 +32,10 @@ void Turnstile_emit_z(Context* ctxt) {
 };
 
 void Turnstile_emit_space(Context* ctxt) {
+    SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    printf("eimit space!!\n");
+    keyboard->dispatchPressDown(kHIDUsage_KeyboardSpacebar);
+    keyboard->dispatchPressUp(kHIDUsage_KeyboardSpacebar);
 };
 
 void Turnstile_emit_slash(Context* ctxt) {
