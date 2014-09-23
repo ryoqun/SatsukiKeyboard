@@ -54,6 +54,9 @@ void Turnstile_emit_space(Context* ctxt) {
 };
 
 void Turnstile_emit_slash(Context* ctxt) {
+    SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    keyboard->dispatchPressDown(kHIDUsage_KeyboardSlash);
+    keyboard->dispatchPressUp(kHIDUsage_KeyboardSlash);
 };
 
 void Turnstile_space_mode(Context* ctxt, char flag) {
