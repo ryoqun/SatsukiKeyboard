@@ -305,10 +305,16 @@ bool SatsukiKeyboard::translateSpaceMode(UInt32 originalUsage,
 }
 
 void SatsukiKeyboard::emit(KeyEvent key_event) {
-    printf("Satsuki Key event: %u %u %u\n",
+    printf("Satsuki Key event: %u %u %u (space: %d slash: %d z: %d tenkey: %d shift: %d)\n",
            (unsigned int)key_event.usage,
            (unsigned int)key_event.value,
-           (unsigned int)key_event.options);
+           (unsigned int)key_event.options,
+           (int)key_event.is_space,
+           (int)key_event.is_slash,
+           (int)key_event.is_z,
+           (int)key_event.is_tenkey,
+           (int)key_event.is_shift);
+    dispatch(key_event.usage, key_event.value, key_event.options);
 }
 
 void SatsukiKeyboard::space_mode(char flag){
@@ -336,17 +342,17 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       0, //usage == kHIDUsage_KeyboardHenkan,
   };
 
-  printf("Key event: %u %u %u\n",
-         (unsigned int) usage,
-         (unsigned int)value,
-         (unsigned int)options);
+  //printf("Key event: %u %u %u\n",
+    //     (unsigned int) usage,
+      //   (unsigned int)value,
+        // (unsigned int)options);
 
     if(isPressedDown(value)) {
         satsukiContext_keydown(&mSatsukiContext, ke);
     } else if (isPressedUp(value)){
         satsukiContext_keyup(&mSatsukiContext, ke);
     }
-    
+    return;
     
   if (usage == kHIDUsage_KeyboardSpacebar) {
     if (isPressedDown(value)) {

@@ -55,6 +55,8 @@
 #define TRACE printf
 #endif
 
+#define STATEMAP_DEBUG 1
+
 #ifdef STATEMAP_DEBUG
 #define STATE_MEMBERS_DEBUG \
 const char *_name;
@@ -80,7 +82,7 @@ const char * _transition; \
 int _debug_flag;
 #define FSM_INIT_DEBUG(fsm) \
 (fsm)->_transition = NULL; \
-(fsm)->_debug_flag = 0
+(fsm)->_debug_flag = 1
 #define setTransition(fsm, transition) \
 (fsm)->_transition = (transition)
 #define getTransition(fsm) \
