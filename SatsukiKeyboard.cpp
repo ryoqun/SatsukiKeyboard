@@ -326,18 +326,14 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
         translateTenkeyMode(originalUsage, translatedUsage);
     }
 
-    if ((shiftModifier and !shiftPressed and isPressedDown(key_event.value)) or shiftMode) {
+    if ((shiftModifier and isPressedDown(key_event.value)) or shiftMode) {
         dispatchShiftDown();
-    } else if (!shiftModifier and shiftPressed and isPressedDown(key_event.value)) {
-        dispatchShiftUp();
     }
     
     dispatch(translatedUsage, key_event.value, key_event.options);
     
-    if ((shiftModifier and shiftPressed and isPressedUp(key_event.value)) or shiftMode) {
+    if ((shiftModifier and isPressedUp(key_event.value)) or shiftMode) {
         dispatchShiftUp();
-    } else if (!shiftModifier and !shiftPressed and isPressedUp(key_event.value)) {
-        dispatchShiftDown();
     }
 }
 
@@ -368,7 +364,7 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       options,
       usage == kHIDUsage_KeyboardSpacebar,
       0, //usage == kHIDUsage_KeyboardSlash,
-      0, //usage == kHIDUsage_KeyboardZ,
+      usage == kHIDUsage_KeyboardZ,
       usage == kHIDUsage_KeyboardMuhenkan,
       usage == kHIDUsage_KeyboardHenkan,
   };
