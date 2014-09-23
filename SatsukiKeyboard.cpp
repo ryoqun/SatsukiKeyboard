@@ -304,6 +304,14 @@ bool SatsukiKeyboard::translateSpaceMode(UInt32 originalUsage,
   return translated;
 }
 
+void SatsukiKeyboard::buffer(KeyEvent key_event) {
+  bufferedKeyEvent = key_event;
+}
+
+void SatsukiKeyboard::flush() {
+  emit(bufferedKeyEvent);
+}
+
 void SatsukiKeyboard::emit(KeyEvent key_event) {
     printf("Satsuki emit Key event: %u %u %u (space: %d control: %d tenkey: %d shift: %d)\n",
            (unsigned int)key_event.usage,
@@ -326,14 +334,26 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
         translateTenkeyMode(originalUsage, translatedUsage);
     }
 
-    if ((shiftModifier and isPressedDown(key_event.value)) or shiftMode) {
+    if (isPressedDown(key_event.value)) {
+      if (shiftModifier or shiftMode) {
         dispatchShiftDown();
+      }
+      
+      if (controlMode) {
+        dispatchPressDown(kHIDUsage_KeyboardRightControl);
+      }
     }
     
     dispatch(translatedUsage, key_event.value, key_event.options);
     
-    if ((shiftModifier and isPressedUp(key_event.value)) or shiftMode) {
+    if(isPressedUp(key_event.value)) {
+      if (shiftModifier or shiftMode) {
         dispatchShiftUp();
+      }
+
+      if (controlMode) {
+        dispatchPressUp(kHIDUsage_KeyboardRightControl);
+      }
     }
 }
 
@@ -350,6 +370,11 @@ void SatsukiKeyboard::tenkey_mode(char flag){
 void SatsukiKeyboard::shift_mode(char flag){
     printf("SMC shift mode: %d!!!\n", (int)flag);
     shiftMode = flag;
+}
+
+void SatsukiKeyboard::control_mode(char flag){
+    printf("SMC control mode: %d!!!\n", (int)flag);
+    controlMode = flag;
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,

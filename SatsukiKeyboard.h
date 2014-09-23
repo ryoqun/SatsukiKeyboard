@@ -23,9 +23,12 @@ public:
   void space_mode(char flag);
   void tenkey_mode(char flag);
   void shift_mode(char flag);
+  void control_mode(char flag);
   
-    void dispatchPressDown(UInt32 usage);
-    void dispatchPressUp(UInt32 usage);
+  void dispatchPressDown(UInt32 usage);
+  void dispatchPressUp(UInt32 usage);
+  void buffer(KeyEvent key_event);
+  void flush();
 
 private:
   static const UInt32 PRESS_DOWN = 1;
@@ -43,7 +46,8 @@ private:
   UInt32 currentUsagePage;
 
   struct satsukiContext mSatsukiContext;
-    void *mStack[4096];
+  void *mStack[4096];
+  KeyEvent bufferedKeyEvent;
 
   bool isPressedDown(UInt32 value);
   bool isPressedUp(UInt32 value);
