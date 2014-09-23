@@ -7,12 +7,15 @@
 //
 
 extern "C" {
-  #include "engine.h"
+#include "engine.h"
 }
 
 #include "SatsukiKeyboard.h"
 #include <IOKit/hid/IOHIDUsageTables.h>
 
+extern "C" {
+#include "statemap.h"
+}
 
 void Turnstile_buffer(Context* ctxt, KeyEvent key_event) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
@@ -30,6 +33,12 @@ void Turnstile_emit(Context* ctxt, KeyEvent key_event) {
 };
 
 void Turnstile_pop_state(Context* ctxt) {
+    SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    printf("pop state!!!!!!!!!\n");
+    popState(&(keyboard->mSatsukiContext));
+    if ((keyboard->mSatsukiContext._state)->Exit != NULL) {
+        (keyboard->mSatsukiContext._state)->Exit(&keyboard->mSatsukiContext);
+    }
 };
 
 void Turnstile_emit_z(Context* ctxt) {
@@ -40,7 +49,6 @@ void Turnstile_emit_z(Context* ctxt) {
 
 void Turnstile_emit_space(Context* ctxt) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
-    printf("eimit space!!\n");
     keyboard->dispatchPressDown(kHIDUsage_KeyboardSpacebar);
     keyboard->dispatchPressUp(kHIDUsage_KeyboardSpacebar);
 };

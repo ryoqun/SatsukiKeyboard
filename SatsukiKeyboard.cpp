@@ -399,11 +399,13 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       //   (unsigned int)value,
         // (unsigned int)options);
 
+    printf("before stack size: %ld\n", mSatsukiContext._stack_curr - mSatsukiContext._stack_start);
     if(isPressedDown(value)) {
         satsukiContext_keydown(&mSatsukiContext, ke);
     } else if (isPressedUp(value)){
         satsukiContext_keyup(&mSatsukiContext, ke);
     }
+    printf("after stack size: %ld\n", mSatsukiContext._stack_curr - mSatsukiContext._stack_start);
     return;
     
   if (usage == kHIDUsage_KeyboardSpacebar) {

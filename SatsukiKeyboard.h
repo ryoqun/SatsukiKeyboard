@@ -29,6 +29,8 @@ public:
   void dispatchPressUp(UInt32 usage);
   void buffer(KeyEvent key_event);
   void flush();
+  struct satsukiContext mSatsukiContext;
+
 
 private:
   static const UInt32 PRESS_DOWN = 1;
@@ -45,7 +47,6 @@ private:
   AbsoluteTime currentTimeStamp;
   UInt32 currentUsagePage;
 
-  struct satsukiContext mSatsukiContext;
   void *mStack[4096];
   KeyEvent bufferedKeyEvent;
 
