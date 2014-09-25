@@ -136,12 +136,15 @@ FSM_INIT_DEBUG(fsm)
 
 #define getState(fsm) \
 (fsm)->_state
+
 #define clearState(fsm) \
 (fsm)->_previous_state = (fsm)->_state; \
 (fsm)->_state = NULL
+
 #define setState(fsm, state) \
 (fsm)->_state = (state); \
 setState_debug(fsm, state)
+
 #define pushState(fsm, state) \
 if ((fsm)->_stack_curr >= (fsm)->_stack_max) { \
 } \
@@ -149,10 +152,16 @@ if ((fsm)->_stack_curr >= (fsm)->_stack_max) { \
 (fsm)->_stack_curr ++; \
 (fsm)->_state = state; \
 pushState_debug(fsm, state)
+
 #define popState(fsm) \
+if ((fsm)->_stack_curr > (fsm)->_stack_start) { \
 (fsm)->_stack_curr --; \
 (fsm)->_state = *((fsm)->_stack_curr); \
-popState_debug(fsm)
+popState_debug(fsm) \
+} else { \
+printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");\
+}
+
 #define emptyStateStack(fsm) \
 (fsm)->_stack_curr = (fsm)->_stack_start
 
