@@ -59,9 +59,9 @@ bool SatsukiKeyboard::isPressedUp(UInt32 value)
   return value == PRESS_UP;
 }
 
-void SatsukiKeyboard::dispatchPressDown(UInt32 usage)
+void SatsukiKeyboard::emitPressDown(UInt32 usage)
 {
-  /*dispatch(usage, PRESS_UP);KeyEvent ke = {
+  KeyEvent ke = {
     usage,
     PRESS_DOWN,
     0,
@@ -71,13 +71,12 @@ void SatsukiKeyboard::dispatchPressDown(UInt32 usage)
     usage == kHIDUsage_KeyboardMuhenkan,
     usage == kHIDUsage_KeyboardHenkan,
   };
-  emit(ke);*/
-  dispatch(usage, PRESS_DOWN);
+  emit(ke);
 }
 
-void SatsukiKeyboard::dispatchPressUp(UInt32 usage)
+void SatsukiKeyboard::emitPressUp(UInt32 usage)
 {
-  /*KeyEvent ke = {
+  KeyEvent ke = {
     usage,
     PRESS_UP,
     0,
@@ -87,7 +86,16 @@ void SatsukiKeyboard::dispatchPressUp(UInt32 usage)
     usage == kHIDUsage_KeyboardMuhenkan,
     usage == kHIDUsage_KeyboardHenkan,
   };
-  emit(ke);*/
+  emit(ke);
+}
+
+void SatsukiKeyboard::dispatchPressDown(UInt32 usage)
+{
+  dispatch(usage, PRESS_DOWN);
+}
+
+void SatsukiKeyboard::dispatchPressUp(UInt32 usage)
+{
   dispatch(usage, PRESS_UP);
 }
 

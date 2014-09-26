@@ -43,20 +43,20 @@ void Turnstile_pop_state(Context* ctxt) {
 
 void Turnstile_emit_z(Context* ctxt) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
-    keyboard->dispatchPressDown(kHIDUsage_KeyboardZ);
-    keyboard->dispatchPressUp(kHIDUsage_KeyboardZ);
+    keyboard->emitPressDown(kHIDUsage_KeyboardZ);
+    keyboard->emitPressUp(kHIDUsage_KeyboardZ);
 };
 
 void Turnstile_emit_space(Context* ctxt) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
-    keyboard->dispatchPressDown(kHIDUsage_KeyboardSpacebar);
-    keyboard->dispatchPressUp(kHIDUsage_KeyboardSpacebar);
+    keyboard->emitPressDown(kHIDUsage_KeyboardSpacebar);
+    keyboard->emitPressUp(kHIDUsage_KeyboardSpacebar);
 };
 
 void Turnstile_emit_slash(Context* ctxt) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
-    keyboard->dispatchPressDown(kHIDUsage_KeyboardSlash);
-    keyboard->dispatchPressUp(kHIDUsage_KeyboardSlash);
+    keyboard->emitPressDown(kHIDUsage_KeyboardSlash);
+    keyboard->emitPressUp(kHIDUsage_KeyboardSlash);
 };
 
 void Turnstile_space_mode(Context* ctxt, char flag) {

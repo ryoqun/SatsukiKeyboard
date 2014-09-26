@@ -27,6 +27,8 @@ public:
   
   void dispatchPressDown(UInt32 usage);
   void dispatchPressUp(UInt32 usage);
+  void emitPressDown(UInt32 usage);
+  void emitPressUp(UInt32 usage);
   void buffer(KeyEvent key_event);
   void flush();
   struct satsukiContext mSatsukiContext;
