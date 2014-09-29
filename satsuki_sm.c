@@ -193,11 +193,24 @@ void MainMap_Shift_Exit(struct satsukiContext *fsm)
 static void MainMap_Shift_keydown(struct satsukiContext *fsm, KeyEvent event)
 {
     struct Turnstile* ctxt = getOwner(fsm);
-    const struct TurnstileState* EndStateName = getState(fsm);
 
-    clearState(fsm);
-    Turnstile_emit(ctxt, event);
-    setState(fsm, EndStateName);
+    if ( event.is_space ) {
+        /* No actions. */
+        pushState(fsm, &MainMap_PreSpace);
+        ENTRY_STATE(getState(fsm));
+    }
+    else if ( event.is_tenkey ) {
+        /* No actions. */
+        pushState(fsm, &MainMap_Tenkey);
+        ENTRY_STATE(getState(fsm));
+    }
+    else {
+        const struct TurnstileState* EndStateName = getState(fsm);
+
+        clearState(fsm);
+        Turnstile_emit(ctxt, event);
+        setState(fsm, EndStateName);
+    }
 }
 
 #undef MainMap_Shift_keyup
@@ -942,6 +955,7 @@ void satsukiContext_keydown(struct satsukiContext* fsm, KeyEvent event)
 {
     const struct TurnstileState* state = getState(fsm);
 
+    assert(state != NULL);
     setTransition(fsm, "keydown");
     state->keydown(fsm, event);
     setTransition(fsm, NULL);
@@ -951,6 +965,7 @@ void satsukiContext_keyup(struct satsukiContext* fsm, KeyEvent event)
 {
     const struct TurnstileState* state = getState(fsm);
 
+    assert(state != NULL);
     setTransition(fsm, "keyup");
     state->keyup(fsm, event);
     setTransition(fsm, NULL);
