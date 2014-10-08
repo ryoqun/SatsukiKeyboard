@@ -5,8 +5,8 @@
  * from file : satsuki.sm
  */
 
-#ifndef _H_SATSUKI_SM
-#define _H_SATSUKI_SM
+#ifndef _SATSUKI_SM_H
+#define _SATSUKI_SM_H
 
 #include <statemap.h>
 #include "engine.h"
@@ -14,15 +14,12 @@
 struct Turnstile;
 struct satsukiContext;
 
-struct TurnstileState
-{
-    void(*Entry)(struct satsukiContext*);
-    void(*Exit)(struct satsukiContext*);
-    
-    void(*keydown)(struct satsukiContext*, KeyEvent);
-    void(*keyup)(struct satsukiContext*, KeyEvent);
-    
-    void(*Default)(struct satsukiContext*);
+struct TurnstileState {
+    void(*Entry)(struct satsukiContext *const fsm);
+    void(*Exit)(struct satsukiContext *const fsm);
+    void(*keydown)(struct satsukiContext *const fsm, KeyEvent event);
+    void(*keyup)(struct satsukiContext *const fsm, KeyEvent event);
+    void(*Default)(struct satsukiContext *const fsm);
     STATE_MEMBERS
 };
 
@@ -42,34 +39,38 @@ extern const struct TurnstileState MainMap_SemiSlashControl;
 extern const struct TurnstileState MainMap_ZKeyControl;
 extern const struct TurnstileState MainMap_SlashControl;
 
-struct satsukiContext
-{
+struct satsukiContext {
     struct Turnstile *_owner;
     FSM_MEMBERS(Turnstile)
 };
 
-
 #ifdef NO_SATSUKI_SM_MACRO
-extern void satsukiContext_Init(struct satsukiContext*, struct Turnstile*);
-extern void satsukiContext_EnterStartState(struct satsukiContext*);
-extern void satsukiContext_keydown(struct satsukiContext*, KeyEvent);
-extern void satsukiContext_keyup(struct satsukiContext*, KeyEvent);
+extern void satsukiContext_Init(struct satsukiContext *const fsm, struct Turnstile *const owner);
+extern void satsukiContext_EnterStartState(struct satsukiContext *const fsm);
+extern void satsukiContext_keydown(struct satsukiContext *const fsm, KeyEvent event);
+extern void satsukiContext_keyup(struct satsukiContext *const fsm, KeyEvent event);
 #else
 #define satsukiContext_Init(fsm, owner, stack) \
-FSM_INIT((fsm), &MainMap_Normal); \
-FSM_STACK((fsm), stack); \
-(fsm)->_owner = (owner);
+    FSM_INIT((fsm), &MainMap_Normal); \
+    FSM_STACK((fsm), stack); \
+    (fsm)->_owner = (owner)
 
 #define satsukiContext_EnterStartState(fsm) \
-if (getState(fsm)->Entry != NULL) { \
-getState(fsm)->Entry(fsm); \
+if ((getState(fsm))->Entry != NULL) { \
+(getState(fsm))->Entry(fsm); \
 }
 
 #define satsukiContext_keydown(fsm, event) \
-getState(fsm)->keydown(fsm, event);
+    assert(getState(fsm) != NULL); \
+    setTransition((fsm), "keydown"); \
+    getState(fsm)->keydown((fsm), (event)); \
+    setTransition((fsm), NULL)
 
 #define satsukiContext_keyup(fsm, event) \
-getState(fsm)->keyup(fsm, event);
+    assert(getState(fsm) != NULL); \
+    setTransition((fsm), "keyup"); \
+    getState(fsm)->keyup((fsm), (event)); \
+    setTransition((fsm), NULL)
 #endif
 
 #endif
