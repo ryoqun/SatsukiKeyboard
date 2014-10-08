@@ -355,6 +355,11 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
     UInt32 translatedUsage, originalUsage;
     translatedUsage = originalUsage = key_event.usage;
     bool shiftModifier = false;
+  
+  
+    if(translatedUsage == 136) {
+      translatedUsage = kHIDUsage_KeyboardRightGUI;
+    }
 
     if (spaceMode) {
         translateSpaceMode(originalUsage, translatedUsage, shiftModifier);
