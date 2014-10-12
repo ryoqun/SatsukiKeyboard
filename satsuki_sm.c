@@ -7,6 +7,7 @@
 
 #include "engine.h"
 #include "satsuki_sm.h"
+#include "statemap.h"
 
 #define getOwner(fsm) (fsm)->_owner
 
@@ -32,6 +33,9 @@ static void TurnstileState_keyup(struct satsukiContext *const fsm, KeyEvent even
 
 static void TurnstileState_Default(struct satsukiContext *const fsm)
 {
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("TRANSITION   : %s.%s\n", getName(getState(fsm)), getTransition(fsm));
+    }
     State_Default(fsm);
 }
 
@@ -88,36 +92,105 @@ static void MainMap_Normal_keydown(struct satsukiContext *const fsm, KeyEvent ev
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Normal)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_shift ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_Shift);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_tenkey ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_Tenkey);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -128,8 +201,17 @@ static void MainMap_Normal_keyup(struct satsukiContext *const fsm, KeyEvent even
     struct Turnstile *ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Normal)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_Normal.keyup(event)\n");
+    }
     clearState(fsm);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_Normal.keyup(event)\n");
+    }
     setState(fsm, EndStateName);
 }
 
@@ -139,7 +221,7 @@ const struct TurnstileState MainMap_Normal = {
     MainMap_Normal_keydown,
     MainMap_Normal_keyup,
     MainMap_Normal_Default,
-    0
+    0, "MainMap_Normal"
 };
 
 void MainMap_Shift_Entry(struct satsukiContext *const fsm)
@@ -161,21 +243,54 @@ static void MainMap_Shift_keydown(struct satsukiContext *const fsm, KeyEvent eve
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Shift)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_tenkey ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_Tenkey);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Shift.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -185,16 +300,37 @@ static void MainMap_Shift_keyup(struct satsukiContext *const fsm, KeyEvent event
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Shift)\n");
+    }
     if ( event.is_shift ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Shift.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Shift.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Shift.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Shift.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -205,7 +341,7 @@ const struct TurnstileState MainMap_Shift = {
     MainMap_Shift_keydown,
     MainMap_Shift_keyup,
     MainMap_Shift_Default,
-    1
+    1, "MainMap_Shift"
 };
 
 void MainMap_Tenkey_Entry(struct satsukiContext *const fsm)
@@ -228,8 +364,17 @@ static void MainMap_Tenkey_keydown(struct satsukiContext *const fsm, KeyEvent ev
     struct Turnstile *ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Tenkey)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_Tenkey.keydown(event)\n");
+    }
     clearState(fsm);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_Tenkey.keydown(event)\n");
+    }
     setState(fsm, EndStateName);
 }
 
@@ -238,16 +383,37 @@ static void MainMap_Tenkey_keyup(struct satsukiContext *const fsm, KeyEvent even
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Tenkey)\n");
+    }
     if ( event.is_tenkey ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Tenkey.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Tenkey.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Tenkey.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Tenkey.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -258,7 +424,7 @@ const struct TurnstileState MainMap_Tenkey = {
     MainMap_Tenkey_keydown,
     MainMap_Tenkey_keyup,
     MainMap_Tenkey_Default,
-    2
+    2, "MainMap_Tenkey"
 };
 
 #undef MainMap_PostSpace_keydown
@@ -267,8 +433,17 @@ static void MainMap_PostSpace_keydown(struct satsukiContext *const fsm, KeyEvent
     struct Turnstile *ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PostSpace)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_PostSpace.keydown(event)\n");
+    }
     clearState(fsm);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_PostSpace.keydown(event)\n");
+    }
     setState(fsm, EndStateName);
 }
 
@@ -277,17 +452,38 @@ static void MainMap_PostSpace_keyup(struct satsukiContext *const fsm, KeyEvent e
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PostSpace)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PostSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_pop_state(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PostSpace.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PostSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PostSpace.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -298,7 +494,7 @@ const struct TurnstileState MainMap_PostSpace = {
     MainMap_PostSpace_keydown,
     MainMap_PostSpace_keyup,
     MainMap_PostSpace_Default,
-    3
+    3, "MainMap_PostSpace"
 };
 
 void MainMap_NestedSpace_Entry(struct satsukiContext *const fsm)
@@ -321,8 +517,17 @@ static void MainMap_NestedSpace_keydown(struct satsukiContext *const fsm, KeyEve
     struct Turnstile *ctxt = getOwner(fsm);
     const struct TurnstileState* EndStateName = getState(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedSpace)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSpace.keydown(event)\n");
+    }
     clearState(fsm);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSpace.keydown(event)\n");
+    }
     setState(fsm, EndStateName);
 }
 
@@ -331,17 +536,38 @@ static void MainMap_NestedSpace_keyup(struct satsukiContext *const fsm, KeyEvent
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedSpace)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_pop_state(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSpace.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSpace.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -352,7 +578,7 @@ const struct TurnstileState MainMap_NestedSpace = {
     MainMap_NestedSpace_keydown,
     MainMap_NestedSpace_keyup,
     MainMap_NestedSpace_Default,
-    4
+    4, "MainMap_NestedSpace"
 };
 
 void MainMap_NestedZKeyControl_Entry(struct satsukiContext *const fsm)
@@ -374,14 +600,29 @@ static void MainMap_NestedZKeyControl_keydown(struct satsukiContext *const fsm, 
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedZKeyControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedZKeyControl.keydown(event)\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedZKeyControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedZKeyControl.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -391,17 +632,38 @@ static void MainMap_NestedZKeyControl_keyup(struct satsukiContext *const fsm, Ke
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_pop_state(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedZKeyControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedZKeyControl.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -412,7 +674,7 @@ const struct TurnstileState MainMap_NestedZKeyControl = {
     MainMap_NestedZKeyControl_keydown,
     MainMap_NestedZKeyControl_keyup,
     MainMap_NestedZKeyControl_Default,
-    5
+    5, "MainMap_NestedZKeyControl"
 };
 
 void MainMap_NestedSlashControl_Entry(struct satsukiContext *const fsm)
@@ -434,14 +696,29 @@ static void MainMap_NestedSlashControl_keydown(struct satsukiContext *const fsm,
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedSlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSlashControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSlashControl.keydown(event)\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSlashControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSlashControl.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -451,17 +728,38 @@ static void MainMap_NestedSlashControl_keyup(struct satsukiContext *const fsm, K
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_NestedSlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_pop_state(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSlashControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_NestedSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_NestedSlashControl.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -472,7 +770,7 @@ const struct TurnstileState MainMap_NestedSlashControl = {
     MainMap_NestedSlashControl_keydown,
     MainMap_NestedSlashControl_keyup,
     MainMap_NestedSlashControl_Default,
-    6
+    6, "MainMap_NestedSlashControl"
 };
 
 #undef MainMap_PreSpace_keydown
@@ -480,35 +778,122 @@ static void MainMap_PreSpace_keydown(struct satsukiContext *const fsm, KeyEvent 
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreSpace)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         setState(fsm, &MainMap_Space);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
         pushState(fsm, &MainMap_PreSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         setState(fsm, &MainMap_Space);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
         pushState(fsm, &MainMap_PreZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         setState(fsm, &MainMap_Space);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_space_mode(ctxt, True);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keydown(event)\n");
+        }
         setState(fsm, &MainMap_Space);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
 }
 
@@ -517,25 +902,76 @@ static void MainMap_PreSpace_keyup(struct satsukiContext *const fsm, KeyEvent ev
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreSpace)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_space(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         setState(fsm, &MainMap_PostSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_z(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSpace.keyup(event)\n");
+        }
         setState(fsm, &MainMap_PostSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
@@ -547,7 +983,7 @@ const struct TurnstileState MainMap_PreSpace = {
     MainMap_PreSpace_keydown,
     MainMap_PreSpace_keyup,
     MainMap_PreSpace_Default,
-    7
+    7, "MainMap_PreSpace"
 };
 
 void MainMap_Space_Entry(struct satsukiContext *const fsm)
@@ -569,24 +1005,63 @@ static void MainMap_Space_keydown(struct satsukiContext *const fsm, KeyEvent eve
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Space)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keydown(event)\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -596,28 +1071,85 @@ static void MainMap_Space_keyup(struct satsukiContext *const fsm, KeyEvent event
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_Space)\n");
+    }
     if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_Space.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_Space.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -628,7 +1160,7 @@ const struct TurnstileState MainMap_Space = {
     MainMap_Space_keydown,
     MainMap_Space_keyup,
     MainMap_Space_Default,
-    8
+    8, "MainMap_Space"
 };
 
 #undef MainMap_PreZKeyControl_keydown
@@ -636,26 +1168,89 @@ static void MainMap_PreZKeyControl_keydown(struct satsukiContext *const fsm, Key
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_ZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_ZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
         pushState(fsm, &MainMap_PreSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_buffer(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreZKeyControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_SemiZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
 }
 
@@ -664,18 +1259,51 @@ static void MainMap_PreZKeyControl_keyup(struct satsukiContext *const fsm, KeyEv
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_z(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreZKeyControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreZKeyControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
@@ -687,7 +1315,7 @@ const struct TurnstileState MainMap_PreZKeyControl = {
     MainMap_PreZKeyControl_keydown,
     MainMap_PreZKeyControl_keyup,
     MainMap_PreZKeyControl_Default,
-    9
+    9, "MainMap_PreZKeyControl"
 };
 
 #undef MainMap_PreSlashControl_keydown
@@ -695,26 +1323,89 @@ static void MainMap_PreSlashControl_keydown(struct satsukiContext *const fsm, Ke
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreSlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_SlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_SlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
         pushState(fsm, &MainMap_PreSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_buffer(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSlashControl.keydown(event)\n");
+        }
         setState(fsm, &MainMap_SemiSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
 }
 
@@ -723,18 +1414,51 @@ static void MainMap_PreSlashControl_keyup(struct satsukiContext *const fsm, KeyE
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_PreSlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSlashControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_PreSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_PreSlashControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }    else {
         MainMap_DefaultState_keyup(fsm, event);
     }
@@ -746,7 +1470,7 @@ const struct TurnstileState MainMap_PreSlashControl = {
     MainMap_PreSlashControl_keydown,
     MainMap_PreSlashControl_keyup,
     MainMap_PreSlashControl_Default,
-    10
+    10, "MainMap_PreSlashControl"
 };
 
 #undef MainMap_SemiZKeyControl_keydown
@@ -754,13 +1478,34 @@ static void MainMap_SemiZKeyControl_keydown(struct satsukiContext *const fsm, Ke
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SemiZKeyControl)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+    }
     EXIT_STATE(getState(fsm));
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiZKeyControl.keydown(event)\n");
+    }
     clearState(fsm);
     Turnstile_control_mode(ctxt, True);
     Turnstile_flush(ctxt);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiZKeyControl.keydown(event)\n");
+    }
     setState(fsm, &MainMap_ZKeyControl);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+    }
     ENTRY_STATE(getState(fsm));
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+    }
 }
 
 #undef MainMap_SemiZKeyControl_keyup
@@ -768,28 +1513,79 @@ static void MainMap_SemiZKeyControl_keyup(struct satsukiContext *const fsm, KeyE
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SemiZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_z(ctxt);
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_control_mode(ctxt, True);
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiZKeyControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_ZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
 }
 
@@ -799,7 +1595,7 @@ const struct TurnstileState MainMap_SemiZKeyControl = {
     MainMap_SemiZKeyControl_keydown,
     MainMap_SemiZKeyControl_keyup,
     MainMap_SemiZKeyControl_Default,
-    11
+    11, "MainMap_SemiZKeyControl"
 };
 
 #undef MainMap_SemiSlashControl_keydown
@@ -807,13 +1603,34 @@ static void MainMap_SemiSlashControl_keydown(struct satsukiContext *const fsm, K
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SemiSlashControl)\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+    }
     EXIT_STATE(getState(fsm));
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+    }
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiSlashControl.keydown(event)\n");
+    }
     clearState(fsm);
     Turnstile_control_mode(ctxt, True);
     Turnstile_flush(ctxt);
     Turnstile_emit(ctxt, event);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiSlashControl.keydown(event)\n");
+    }
     setState(fsm, &MainMap_SlashControl);
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+    }
     ENTRY_STATE(getState(fsm));
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+    }
 }
 
 #undef MainMap_SemiSlashControl_keyup
@@ -821,28 +1638,79 @@ static void MainMap_SemiSlashControl_keyup(struct satsukiContext *const fsm, Key
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SemiSlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit_slash(ctxt);
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_control_mode(ctxt, True);
         Turnstile_flush(ctxt);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SemiSlashControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_SlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
 }
 
@@ -852,7 +1720,7 @@ const struct TurnstileState MainMap_SemiSlashControl = {
     MainMap_SemiSlashControl_keydown,
     MainMap_SemiSlashControl_keyup,
     MainMap_SemiSlashControl_Default,
-    12
+    12, "MainMap_SemiSlashControl"
 };
 
 void MainMap_ZKeyControl_Entry(struct satsukiContext *const fsm)
@@ -874,19 +1742,46 @@ static void MainMap_ZKeyControl_keydown(struct satsukiContext *const fsm, KeyEve
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_ZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
         pushState(fsm, &MainMap_PreSpace);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -896,22 +1791,61 @@ static void MainMap_ZKeyControl_keyup(struct satsukiContext *const fsm, KeyEvent
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_ZKeyControl)\n");
+    }
     if ( event.is_z ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedZKeyControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_ZKeyControl.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -922,7 +1856,7 @@ const struct TurnstileState MainMap_ZKeyControl = {
     MainMap_ZKeyControl_keydown,
     MainMap_ZKeyControl_keyup,
     MainMap_ZKeyControl_Default,
-    13
+    13, "MainMap_ZKeyControl"
 };
 
 void MainMap_SlashControl_Entry(struct satsukiContext *const fsm)
@@ -944,14 +1878,29 @@ static void MainMap_SlashControl_keydown(struct satsukiContext *const fsm, KeyEv
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SlashControl.keydown(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SlashControl.keydown(event)\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SlashControl.keydown(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SlashControl.keydown(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -961,22 +1910,61 @@ static void MainMap_SlashControl_keyup(struct satsukiContext *const fsm, KeyEven
 {
     struct Turnstile *ctxt = getOwner(fsm);
 
+    if (getDebugFlag(fsm) != 0) {
+        TRACE("LEAVING STATE   : MainMap_SlashControl)\n");
+    }
     if ( event.is_slash ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         popState(fsm);
     }
     else if ( event.is_space ) {
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE EXIT     : EXIT_STATE(getState(fsm))\n");
+        }
         EXIT_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER EXIT      : EXIT_STATE(getState(fsm))\n");
+        }
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         /* No actions. */
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         setState(fsm, &MainMap_NestedSlashControl);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("BEFORE ENTRY    : ENTRY_STATE(getState(fsm))\n");
+        }
         ENTRY_STATE(getState(fsm));
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("AFTER ENTRY     : ENTRY_STATE(getState(fsm))\n");
+        }
     }
     else {
         const struct TurnstileState* EndStateName = getState(fsm);
 
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("ENTER TRANSITION: MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         clearState(fsm);
         Turnstile_emit(ctxt, event);
+        if (getDebugFlag(fsm) != 0) {
+            TRACE("EXIT TRANSITION : MainMap_&MainMap_SlashControl.keyup(event)\n");
+        }
         setState(fsm, EndStateName);
     }
 }
@@ -987,7 +1975,7 @@ const struct TurnstileState MainMap_SlashControl = {
     MainMap_SlashControl_keydown,
     MainMap_SlashControl_keyup,
     MainMap_SlashControl_Default,
-    14
+    14, "MainMap_SlashControl"
 };
 
 #ifdef NO_SATSUKI_SM_MACRO
