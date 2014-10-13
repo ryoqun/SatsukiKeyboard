@@ -384,6 +384,9 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
 void SatsukiKeyboard::space_mode(char flag){
   printf("SMC space mode: %d!!!\n", (int)flag);
   spaceMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
+  }
 }
 
 void SatsukiKeyboard::tenkey_mode(char flag){
@@ -394,11 +397,17 @@ void SatsukiKeyboard::tenkey_mode(char flag){
 void SatsukiKeyboard::shift_mode(char flag){
   printf("SMC shift mode: %d!!!\n", (int)flag);
   shiftMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
+  }
 }
 
 void SatsukiKeyboard::control_mode(char flag){
   printf("SMC control mode: %d!!!\n", (int)flag);
   controlMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardRightControl);
+  }
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,

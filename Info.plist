@@ -26,8 +26,14 @@
 	<dict>
 		<key>new keyborad - 2</key>
 		<dict>
+			<key>bInterfaceNumber</key>
+			<integer>0</integer>
+			<key>bConfigurationValue</key>
+			<integer>1</integer>
+			<key>IOProbeScore</key>
+			<integer>10000</integer>
 			<key>IOProviderClass</key>
-			<string>IOUSBInterface</string>
+			<string>IOHIDInterface</string>
 			<key>IOClass</key>
 			<string>SatsukiKeyboard</string>
 			<key>IOMatchCategory</key>
@@ -42,6 +48,8 @@
 			<integer>1452</integer>
 			<key>ProductID</key>
 			<integer>610</integer>
+			<key>bcdDevice</key>
+			<integer>546</integer>
 		</dict>
 		<key>new keyborad</key>
 		<dict>
