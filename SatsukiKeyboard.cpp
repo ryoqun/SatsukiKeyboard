@@ -27,16 +27,15 @@ void SatsukiKeyboard::stop(IOService *provider)
 
 void SatsukiKeyboard::resetMode()
 {
-  shiftPressed = false;
   resetSpaceMode();
   resetShiftMode();
   resetTenkeyMode();
-  commandMode = commandModeUsed = false;
+  commandMode = false;
 }
 
 void SatsukiKeyboard::resetSpaceMode()
 {
-  spaceMode = spaceModeUsed = false;
+  spaceMode = false;
 }
 
 void SatsukiKeyboard::resetShiftMode()
@@ -46,7 +45,7 @@ void SatsukiKeyboard::resetShiftMode()
 
 void SatsukiKeyboard::resetTenkeyMode()
 {
-  tenkeyMode = tenkeyModeUsed = false;
+  tenkeyMode = false;
 }
 
 bool SatsukiKeyboard::isPressedDown(UInt32 value)
@@ -70,6 +69,7 @@ void SatsukiKeyboard::emitPressDown(UInt32 usage)
     usage == kHIDUsage_KeyboardZ,
     usage == kHIDUsage_KeyboardMuhenkan,
     usage == kHIDUsage_KeyboardHenkan,
+    usage == kHIDUsage_KeyboardPeriod,
   };
   emit(ke);
 }
@@ -85,6 +85,7 @@ void SatsukiKeyboard::emitPressUp(UInt32 usage)
     usage == kHIDUsage_KeyboardZ,
     usage == kHIDUsage_KeyboardMuhenkan,
     usage == kHIDUsage_KeyboardHenkan,
+    usage == kHIDUsage_KeyboardPeriod,
   };
   emit(ke);
 }
@@ -97,18 +98,6 @@ void SatsukiKeyboard::dispatchPressDown(UInt32 usage)
 void SatsukiKeyboard::dispatchPressUp(UInt32 usage)
 {
   dispatch(usage, PRESS_UP);
-}
-
-void SatsukiKeyboard::dispatchShiftDown()
-{
-  dispatchPressDown(kHIDUsage_KeyboardLeftShift);
-  shiftPressed = true;
-}
-
-void SatsukiKeyboard::dispatchShiftUp()
-{
-  dispatchPressUp(kHIDUsage_KeyboardLeftShift);
-  shiftPressed = false;
 }
 
 void SatsukiKeyboard::dispatch(UInt32 usage, UInt32 value, IOOptionBits options)
@@ -371,7 +360,7 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
 
     if (isPressedDown(key_event.value)) {
       if (shiftModifier or shiftMode) {
-        dispatchShiftDown();
+        dispatchPressDown(kHIDUsage_KeyboardLeftShift);
       }
       
       if (controlMode) {
@@ -383,7 +372,7 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
     
     if(isPressedUp(key_event.value)) {
       if (shiftModifier or shiftMode) {
-        dispatchShiftUp();
+        dispatchPressUp(kHIDUsage_KeyboardLeftShift);
       }
 
       if (controlMode) {
@@ -395,9 +384,6 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
 void SatsukiKeyboard::space_mode(char flag){
   printf("SMC space mode: %d!!!\n", (int)flag);
   spaceMode = flag;
-  if(!flag) {
-    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
-  }
 }
 
 void SatsukiKeyboard::tenkey_mode(char flag){
@@ -408,25 +394,17 @@ void SatsukiKeyboard::tenkey_mode(char flag){
 void SatsukiKeyboard::shift_mode(char flag){
   printf("SMC shift mode: %d!!!\n", (int)flag);
   shiftMode = flag;
-  if(!flag) {
-    dispatchPressUp(kHIDUsage_KeyboardLeftShift);
-  }
 }
 
 void SatsukiKeyboard::control_mode(char flag){
   printf("SMC control mode: %d!!!\n", (int)flag);
   controlMode = flag;
-  if(!flag) {
-    dispatchPressUp(kHIDUsage_KeyboardRightControl);
-  }
 }
 
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
                                          UInt32 value,
                                          IOOptionBits options)
 {
-  bool ignore = false;
-
   KeyEvent ke = {
       usage,
       value,
@@ -436,6 +414,7 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       usage == kHIDUsage_KeyboardZ,
       usage == kHIDUsage_KeyboardMuhenkan,
       usage == kHIDUsage_KeyboardHenkan,
+      usage == kHIDUsage_KeyboardPeriod,
   };
 
   //printf("Key event: %u %u %u\n",
@@ -450,148 +429,6 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
         satsukiContext_keyup(&mSatsukiContext, ke);
     }
     //printf("after stack size: %ld\n", mSatsukiContext._stack_curr - mSatsukiContext._stack_start);
-    return;
-    
-  if (usage == kHIDUsage_KeyboardSpacebar) {
-    if (isPressedDown(value)) {
-        if(commandMode) {
-            commandModeUsed = true;
-        }
-      ignore = true;
-      spaceMode = true;
-    } else if (isPressedUp(value)) {
-      if (spaceModeUsed) {
-        ignore = true;
-        if (shiftPressed && !shiftMode) {
-          dispatchShiftUp();
-        }
-      } else {
-          dispatchPressDown(kHIDUsage_KeyboardSpacebar);
-      }
-      resetSpaceMode();
-    } else {
-      printf("unrecognized key event value: %u\n", (unsigned int)value);
-    }
-  } else if (usage == kHIDUsage_KeyboardHenkan) {
-    ignore = true;
-
-    if (isPressedDown(value) and !shiftPressed) {
-      shiftMode = true;
-      dispatchShiftDown();
-    } else if (isPressedUp(value) and shiftPressed) {
-      shiftMode = false;
-      dispatchShiftUp();
-    }
-  } else if (usage == kHIDUsage_KeyboardMuhenkan) {
-    ignore = true;
-
-    if (isPressedDown(value)) {
-      tenkeyMode = true;
-    } else {
-      resetTenkeyMode();
-    }
-  } else if (usage == kHIDUsage_KeyboardSlash) {
-      if (isPressedDown(value)) {
-          ignore = true;
-          controlMode = true;
-          dispatchPressDown(kHIDUsage_KeyboardRightControl);
-      } else if (isPressedUp(value)) {
-          dispatchPressUp(kHIDUsage_KeyboardRightControl);
-          if (controlModeUsed) {
-              ignore = true;
-              controlModeUsed = false;
-          } else {
-              dispatchPressDown(kHIDUsage_KeyboardSlash);
-          }
-          controlMode = false;
-      } else {
-          printf("unrecognized key event value: %u\n", (unsigned int)value);
-      }
-  } else if (usage == kHIDUsage_KeyboardZ) {
-      if (isPressedDown(value)) {
-          ignore = true;
-          controlMode = true;
-          dispatchPressDown(kHIDUsage_KeyboardRightControl);
-      } else if (isPressedUp(value)) {
-          dispatchPressUp(kHIDUsage_KeyboardRightControl);
-          if (controlModeUsed) {
-              ignore = true;
-              controlModeUsed = false;
-          } else {
-              dispatchPressDown(kHIDUsage_KeyboardZ);
-          }
-          controlMode = false;
-      } else {
-          printf("unrecognized key event value: %u\n", (unsigned int)value);
-      }
-  } else if (usage == kHIDUsage_KeyboardPeriod) {
-    if (isPressedDown(value)) {
-        ignore = true;
-        commandMode = true;
-        dispatchPressDown(kHIDUsage_KeyboardRightGUI);
-    } else if (isPressedUp(value)) {
-        dispatchPressUp(kHIDUsage_KeyboardRightGUI);
-        if (commandModeUsed) {
-            ignore = true;
-            commandModeUsed = false;
-        } else {
-            dispatchPressDown(kHIDUsage_KeyboardPeriod);
-        }
-        commandMode = false;
-    } else {
-        printf("unrecognized key event value: %u\n", (unsigned int)value);
-    }
-}
-
-  if (ignore) {
-    return;
-  }
-
-  UInt32 originalUsage = usage;
-  bool shiftModifier = false;
-
-  if (spaceMode) {
-    if (isPressedDown(value)) {
-      spaceModeUsed = true;
-    }
-
-    if (spaceModeUsed and translateSpaceMode(originalUsage, usage, shiftModifier)) {
-      if (shiftModifier and isPressedDown(value) and !shiftPressed) {
-        dispatchShiftDown();
-      } else if (!shiftModifier and isPressedDown(value) and shiftPressed) {
-        dispatchShiftUp();
-      }
-    }
-  }
-
-  if (tenkeyMode) {
-    if (isPressedDown(value)) {
-      tenkeyModeUsed = true;
-    }
-    if (tenkeyModeUsed) {
-      translateTenkeyMode(originalUsage, usage);
-    }
-  }
-
-    if (controlMode) {
-        if (isPressedDown(value)) {
-            controlModeUsed = true;
-        }
-    }
-    
-    if(commandMode) {
-        if(isPressedDown(value)) {
-            commandModeUsed = true;
-        }
-    }
-
-  dispatch(usage, value, options);
-
-  if (shiftModifier and shiftPressed and isPressedUp(value) and !shiftMode) {
-    dispatchShiftUp();
-  } else if (!shiftModifier and !shiftPressed and isPressedUp(value) and shiftMode) {
-    dispatchShiftDown();
-  }
 }
 
 void SatsukiKeyboard::dispatchKeyboardEvent(AbsoluteTime timeStamp,

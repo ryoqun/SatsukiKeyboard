@@ -24,6 +24,7 @@ public:
   void tenkey_mode(char flag);
   void shift_mode(char flag);
   void control_mode(char flag);
+  void meta_mode(char flag);
   
   void dispatchPressDown(UInt32 usage);
   void dispatchPressUp(UInt32 usage);
@@ -39,12 +40,11 @@ private:
   static const UInt32 PRESS_UP = 0;
   static const UInt32 kHIDUsage_KeyboardHenkan = 138;
   static const UInt32 kHIDUsage_KeyboardMuhenkan = 139;
-  bool spaceMode, spaceModeUsed;
+  bool spaceMode;
   bool shiftMode;
-  bool tenkeyMode, tenkeyModeUsed;
-  bool controlMode, controlModeUsed;
-  bool shiftPressed;
-  bool commandMode, commandModeUsed;
+  bool tenkeyMode;
+  bool controlMode;
+  bool commandMode;
   
   AbsoluteTime currentTimeStamp;
   UInt32 currentUsagePage;

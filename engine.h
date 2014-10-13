@@ -14,7 +14,7 @@
 typedef struct {
     UInt32 usage, value;
     IOOptionBits options;
-    char is_space, is_slash, is_z, is_tenkey, is_shift;
+    char is_space, is_slash, is_z, is_tenkey, is_shift, is_period;
 } KeyEvent;
 
 #define KEY_SPACE 0
@@ -33,10 +33,12 @@ void Turnstile_emit(Context* ctxt, KeyEvent keyevent);
 void Turnstile_emit_z(Context* ctxt);
 void Turnstile_emit_space(Context* ctxt);
 void Turnstile_emit_slash(Context* ctxt);
+void Turnstile_emit_period(Context* ctxt);
 void Turnstile_space_mode(Context* ctxt, char flag);
 void Turnstile_control_mode(Context* ctxt, char flag);
 void Turnstile_shift_mode(Context* ctxt, char flag);
 void Turnstile_tenkey_mode(Context* ctxt, char flag);
+void Turnstile_meta_mode(Context* ctxt, char flag);
 void Turnstile_pop_state(Context* ctxt);
 
 

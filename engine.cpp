@@ -59,6 +59,12 @@ void Turnstile_emit_slash(Context* ctxt) {
     keyboard->emitPressUp(kHIDUsage_KeyboardSlash);
 };
 
+void Turnstile_emit_period(Context* ctxt) {
+    SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    keyboard->emitPressDown(kHIDUsage_KeyboardPeriod);
+    keyboard->emitPressUp(kHIDUsage_KeyboardPeriod);
+};
+
 void Turnstile_space_mode(Context* ctxt, char flag) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
     keyboard->space_mode(flag);
@@ -77,4 +83,9 @@ void Turnstile_shift_mode(Context* ctxt, char flag) {
 void Turnstile_tenkey_mode(Context* ctxt, char flag) {
     SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
     keyboard->tenkey_mode(flag);
+};
+
+void Turnstile_meta_mode(Context* ctxt, char flag) {
+    //SatsukiKeyboard *keyboard = reinterpret_cast<SatsukiKeyboard*>(ctxt);
+    //keyboard->meta_mode(flag);
 };
