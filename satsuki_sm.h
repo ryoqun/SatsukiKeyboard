@@ -32,10 +32,13 @@ extern const struct TurnstileState MainMap_NestedZKeyControl;
 extern const struct TurnstileState MainMap_NestedSlashControl;
 extern const struct TurnstileState MainMap_PreSpace;
 extern const struct TurnstileState MainMap_Space;
+extern const struct TurnstileState MainMap_PreRightMeta;
 extern const struct TurnstileState MainMap_PreZKeyControl;
 extern const struct TurnstileState MainMap_PreSlashControl;
+extern const struct TurnstileState MainMap_SemiRightMeta;
 extern const struct TurnstileState MainMap_SemiZKeyControl;
 extern const struct TurnstileState MainMap_SemiSlashControl;
+extern const struct TurnstileState MainMap_RightMeta;
 extern const struct TurnstileState MainMap_ZKeyControl;
 extern const struct TurnstileState MainMap_SlashControl;
 
