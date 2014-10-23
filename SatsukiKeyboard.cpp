@@ -345,11 +345,6 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
     translatedUsage = originalUsage = key_event.usage;
     bool shiftModifier = false;
   
-  
-    if(translatedUsage == 136) {
-      translatedUsage = kHIDUsage_KeyboardRightGUI;
-    }
-
     if (spaceMode) {
         translateSpaceMode(originalUsage, translatedUsage, shiftModifier);
     }
@@ -366,6 +361,10 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
       if (controlMode) {
         dispatchPressDown(kHIDUsage_KeyboardRightControl);
       }
+
+      if (commandMode) {
+        dispatchPressDown(kHIDUsage_KeyboardRightGUI);
+      }
     }
     
     dispatch(translatedUsage, key_event.value, key_event.options);
@@ -377,6 +376,9 @@ void SatsukiKeyboard::emit(KeyEvent key_event) {
 
       if (controlMode) {
         dispatchPressUp(kHIDUsage_KeyboardRightControl);
+      }
+      if (commandMode) {
+        dispatchPressUp(kHIDUsage_KeyboardRightGUI);
       }
     }
 }
@@ -410,6 +412,14 @@ void SatsukiKeyboard::control_mode(char flag){
   }
 }
 
+void SatsukiKeyboard::meta_mode(char flag){
+  printf("SMC meta mode: %d!!!\n", (int)flag);
+  commandMode = flag;
+  if(!flag) {
+    dispatchPressUp(kHIDUsage_KeyboardRightGUI);
+  }
+}
+
 void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
                                          UInt32 value,
                                          IOOptionBits options)
@@ -421,8 +431,8 @@ void SatsukiKeyboard::handleKeyboardMode(UInt32 usage,
       usage == kHIDUsage_KeyboardSpacebar,
       usage == kHIDUsage_KeyboardSlash,
       usage == kHIDUsage_KeyboardZ,
-      usage == kHIDUsage_KeyboardMuhenkan,
-      usage == kHIDUsage_KeyboardHenkan,
+      ((usage == kHIDUsage_KeyboardMuhenkan) or (usage == kHIDUsage_KeyboardLeftGUI)),
+      ((usage == kHIDUsage_KeyboardHenkan) or (usage == kHIDUsage_KeyboardRightGUI)),
       usage == kHIDUsage_KeyboardPeriod,
   };
 
